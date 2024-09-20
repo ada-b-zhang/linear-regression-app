@@ -1,5 +1,11 @@
 # linear-regression-app
 
+Instructions for Running Dash App
+1. Clone the repository
+2. Run pip install plotly dash pandas
+3. Run python app.py
+4. Click on the hyperlink that appears in the terminal
+
 * [Sleep Health and Lifestyle Dataset](https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset?select=Sleep_health_and_lifestyle_dataset.csv)
 
 * [Running Calorie Burn Dataset](https://www.kaggle.com/datasets/emin1n/running-calorie-burn-dataset)

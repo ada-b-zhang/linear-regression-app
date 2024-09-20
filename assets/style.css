@@ -1,0 +1,29 @@
+body {
+    background-color: black;
+    color: white;
+}
+
+.Select-control {
+    background-color: black !important;
+    color: white !important;
+}
+
+/* Style for the dropdown options */
+.VirtualizedSelectOption {
+    background-color: black !important;
+    color: white !important;
+}
+
+/* Style for the selected dropdown option */
+.Select-value {
+    background-color: black !important;
+    color: white !important;
+}
+
+.Select-placeholder {
+    color: white !important;
+}
+
+.Select-arrow-zone {
+    color: white !important;
+}
