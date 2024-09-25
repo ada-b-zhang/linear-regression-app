@@ -1,10 +1,23 @@
-# linear-regression-app
+# Linear Regression Demonstration
 
-Instructions for Running Dash App
-1. Clone the repository
-2. Run pip install plotly dash pandas
-3. Run python app.py
-4. Click on the hyperlink that appears in the terminal
+## Instructions for Running Dash App
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ada-b-zhang/linear-regression-app.git
+   ```
+
+2. Run this in your terminal:
+   ```
+   pip install plotly dash pandas
+   ```
+3. Then, run:
+   ```
+   python app.py
+   ```
+4. Copy and paste the http link into a web browser
+
+
+## More datasets if you want to explore linear regression 
 
 * [Sleep Health and Lifestyle Dataset](https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset?select=Sleep_health_and_lifestyle_dataset.csv)
 
