@@ -1,6 +1,6 @@
 # Linear Regression Demonstration
 
-## Instructions for Running Dash App
+## Instructions to run app.py (or 'app2.py' or 'app3.py')
 1. Clone the repository:
    ```bash
    git clone https://github.com/ada-b-zhang/linear-regression-app.git
@@ -10,7 +10,7 @@
    ```
    pip install plotly dash pandas
    ```
-3. Then, run:
+3. Then, run app.py (or 'app2.py' or 'app3.py'):
    ```
    python app.py
    ```
@@ -33,4 +33,4 @@
 
 * [Simple Linear Regression - Placement data](https://www.kaggle.com/datasets/mayurdalvi/simple-linear-regression-placement-data)
 
-* [Advertising dataset](https://www.kaggle.com/datasets/tawfikelmetwally/advertising-dataset)
+* [Advertising dataset](https://www.kaggle.com/datasets/tawfikelmetwally/advertising-dataset) (this is the dataset we're using)
