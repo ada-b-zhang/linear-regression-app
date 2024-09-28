@@ -1,6 +1,6 @@
 # Linear Regression Demonstration
 
-## Instructions to run app.py (or app2.py or app3.py or app4.py)
+## Instructions to run app.py (or app2.py, app3.py, etc.)
 1. Clone the repository:
    ```bash
    git clone https://github.com/ada-b-zhang/linear-regression-app.git
@@ -10,7 +10,7 @@
    ```
    pip install plotly dash pandas
    ```
-3. Then, run app.py (or app2.py or app3.py or app4.py):
+3. Then, run app.py (or app2.py, app3.py, etc.):
    ```
    python app.py
    ```
