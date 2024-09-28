@@ -56,12 +56,14 @@ def update_inputs(selected_column):
     prevent_initial_callback=True
 )
 def update_graph(value, hover_data):
-    marker_opacity = [0.5] * len(advertising_df)
+    # marker_opacity = [1.0] * len(advertising_df)
     colors = ['blue'] * len(advertising_df)
+    sizes = [5] * len(advertising_df)
     if hover_data:
         hover_idx = hover_data['points'][0]['pointIndex']
-        marker_opacity[hover_idx] = 1.0
+        # marker_opacity[hover_idx] = 1.0
         colors[hover_idx] = 'red'
+        sizes[hover_idx] = 10
     fig = px.scatter(advertising_df, x=value, y='Sales', trendline="ols")
     fig.update_layout(
         title={
@@ -85,9 +87,12 @@ def update_graph(value, hover_data):
     fig.update_traces(
             selector=dict(mode='markers'),
             marker=dict(
-                opacity=marker_opacity,
-                color=colors
+                # opacity=marker_opacity,
+                color=colors,
+                size=sizes,
+                line=dict(width=0)
             ),
+            
             hoverinfo='text'
         )
     
@@ -109,12 +114,18 @@ def update_graph(value, hover_data):
 def update_graph_2(value, hover_data):
     # dff = advertising_df[value]
     # print("Value: ", value)
-    marker_opacity = [0.5] * len(advertising_df)
+    # marker_opacity = [0.5] * len(advertising_df)
     colors = ['blue'] * len(advertising_df)
+    sizes = [5] * len(advertising_df)
+    hover_idx = 0
+    hover_text = ''
     if hover_data:
         hover_idx = hover_data['points'][0]['pointIndex']
-        marker_opacity[hover_idx] = 1.0
+        hover_text = advertising_df.iloc[0][value]
+        # marker_opacity[hover_idx] = 1.0
         colors[hover_idx] = 'red'
+        sizes[hover_idx] = 10
+        
     fig = px.scatter(advertising_df, x=value, y='Sales', trendline="ols")
     fig.update_layout(
         title={
@@ -137,10 +148,13 @@ def update_graph_2(value, hover_data):
     fig.update_traces(
             selector=dict(mode='markers'),
             marker=dict(
-                opacity=marker_opacity,
-                color=colors
+                # opacity=marker_opacity,
+                color=colors,
+                size=sizes,
+                line=dict(width=0)
             ),
-            hoverinfo='text'
+            hoverinfo='text',
+            hovertext=[hover_text if i == hover_idx else '' for i in range(len(advertising_df))]
         )
     fig.update_traces(
         line=dict(color="red"),
@@ -156,12 +170,17 @@ def update_graph_2(value, hover_data):
     prevent_initial_call=True
 )
 def update_graph_3(value, hover_data):
-    marker_opacity = [0.5] * len(advertising_df)
+    # marker_opacity = [0.5] * len(advertising_df)
     colors = ['blue'] * len(advertising_df)
+    sizes = [5] * len(advertising_df)
+    hover_idx = 0
+    hover_text = ''
     if hover_data:
         hover_idx = hover_data['points'][0]['pointIndex']
-        marker_opacity[hover_idx] = 1.0
+        hover_text = advertising_df.iloc[0][value]
+        # marker_opacity[hover_idx] = 1.0
         colors[hover_idx] = 'red'
+        sizes[hover_idx] = 10
     fig = px.scatter(advertising_df, x=value, y='Sales', trendline="ols")
     fig.update_layout(
         title={
@@ -185,10 +204,13 @@ def update_graph_3(value, hover_data):
     fig.update_traces(
             selector=dict(mode='markers'),
             marker=dict(
-                opacity=marker_opacity,
-                color=colors
+                # opacity=marker_opacity,
+                color=colors,
+                size=sizes,
+                line=dict(width=0)
             ),
-            hoverinfo='text'
+            hoverinfo='text',
+            hovertext=[hover_text if i == hover_idx else '' for i in range(len(advertising_df))]
         )
 
     fig.update_traces(
