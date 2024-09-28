@@ -9,7 +9,10 @@ min_TV = min(advertising_data['TV'])
 max_TV = max(advertising_data['TV'])
 
 app.layout = html.Div([
-    html.H4('not sure if im gonna finish this project or if this project is gonna finish me'),
+    html.H1('Visualizing Multiple Predictors', 
+            style={'textAlign': 'center'}),
+    html.H4('The impact of Radio and Newspaper on Sales. Feel free to filter to certain values of TV!', 
+            style={'textAlign': 'center'}),    
     dcc.Graph(id="graph"),
     html.P("TV"),
     dcc.RangeSlider(

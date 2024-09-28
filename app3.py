@@ -14,14 +14,13 @@ app = dash.Dash(__name__)
 fig1 = px.scatter(advertising_data, 
                  x="TV", y="Sales", size='Newspaper',
                  color='Radio', trendline="ols",
-                 title='no pain no gain')
+                 title='OLS Regression Results')
 
 # Create the image plot 
 img_url = 'pic.png'
 img = io.imread(img_url)
 fig2 = px.imshow(img)        # work on hiding axes and hover 
 
-# ask Cody about this
 app.layout = html.Div([dcc.Graph(id='scatter-plot',figure=fig1),
                        dcc.Graph(id='image-plot',figure=fig2)])
 

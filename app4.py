@@ -19,7 +19,7 @@ app.layout = html.Div([
 
     html.P("Standard Deviation:"),
     dcc.Slider(id="std", min=1, max=3, value=1, 
-               marks={1: '1', 3: '3'}),
+               marks={1: '1', 2: '2', 3: '3'}),
 
     html.P("Sample Size:"),
     dcc.Slider(id="sample_size", min=0, max=10000, step=100, value=500,
@@ -36,6 +36,7 @@ app.layout = html.Div([
 def display_color(mean, std, sample_size):
     data = np.random.normal(mean, std, size=sample_size) 
     fig = px.histogram(data, range_x=[-10, 10], nbins=50, color_discrete_sequence=['purple'])
+    fig.data[0].showlegend = False
     return fig
 
 app.run_server(debug=True)
