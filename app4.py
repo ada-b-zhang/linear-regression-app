@@ -6,7 +6,10 @@ app = Dash(__name__)
 
 
 app.layout = html.Div([
-    html.H4('Visualizing the Gaussian (Normal) Distribution'),
+    html.H1('Visualizing the Gaussian (Normal) Distribution', 
+            style={'textAlign': 'center'}),
+    html.H4('Try changing the mean, standard deviation, and/or sample size. How does the distribution change?', 
+            style={'textAlign': 'center'}),
     dcc.Graph(id="graph"),
 
     html.P("Mean:"),
@@ -32,8 +35,7 @@ app.layout = html.Div([
     Input("sample_size", "value"))
 def display_color(mean, std, sample_size):
     data = np.random.normal(mean, std, size=sample_size) 
-    fig = px.histogram(data, range_x=[-10, 10], color_discrete_sequence=['purple'] )
-    # fig.add_trace(px.histogram(data, histnorm='density', nbins=30).data[0])
+    fig = px.histogram(data, range_x=[-10, 10], nbins=50, color_discrete_sequence=['purple'])
     return fig
 
 app.run_server(debug=True)
