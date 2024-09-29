@@ -1,4 +1,4 @@
-body {
+/* body {
     background-color: black;
     color: white;
 }
@@ -9,13 +9,13 @@ body {
 }
 
 /* Style for the dropdown options */
-.VirtualizedSelectOption {
+/* .VirtualizedSelectOption {
     background-color: black !important;
     color: white !important;
 }
 
 /* Style for the selected dropdown option */
-.Select-value {
+/* .Select-value {
     background-color: black !important;
     color: white !important;
 }
@@ -26,4 +26,4 @@ body {
 
 .Select-arrow-zone {
     color: white !important;
-}
+} */
