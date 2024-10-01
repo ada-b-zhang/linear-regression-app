@@ -12,15 +12,6 @@ app.layout = html.Div(
         dcc.Dropdown(
             advertising_df.columns[:-1], 'TV', 
             id='dropdown-selection',
-            style={
-                'backgroundColor': 'black',  # Change dropdown background color
-                'color': 'white'  # Change text color
-            }
-            # # This changes the background and text color of the options
-            # dropdown_style={
-            #     'backgroundColor': 'black',  # Dropdown options background color
-            #     'color': 'white'  # Dropdown options text color
-            # }
         ),
         html.Div([(html.Div([dcc.Graph(id='graph-content')], style={'width': '50%', 'height': '200%'})), 
         (html.Div([dcc.Graph(id='graph-content-2'),
@@ -69,19 +60,8 @@ def update_graph(value, hover_data):
         title={
             'text': f"{value} Impact on Sales",
             'x': 0.5,
-            'xanchor': 'center',
-            'font': dict(color="white")
+            'xanchor': 'center'
         },
-        xaxis=dict(
-            title=dict(text=f"{value} Ads in $1000", font=dict(color='white')),
-            tickfont=dict(color='white')
-        ),
-        yaxis=dict(
-            title=dict(text="Sales Revenue in Millions", font=dict(color='white')),
-            tickfont=dict(color='white')
-        ),
-        paper_bgcolor='black',
-        plot_bgcolor='black',
         hovermode='closest'
     )
     fig.update_traces(
@@ -100,9 +80,6 @@ def update_graph(value, hover_data):
         line=dict(color="red"),
         selector=dict(mode="lines"),
     )
-
-    
-    
     return fig
 
 @callback(
@@ -112,9 +89,6 @@ def update_graph(value, hover_data):
     prevent_initial_call=True
 )
 def update_graph_2(value, hover_data):
-    # dff = advertising_df[value]
-    # print("Value: ", value)
-    # marker_opacity = [0.5] * len(advertising_df)
     colors = ['blue'] * len(advertising_df)
     sizes = [5] * len(advertising_df)
     hover_idx = 0
@@ -131,19 +105,8 @@ def update_graph_2(value, hover_data):
         title={
             'text': f"{value} Impact on Sales",
             'x': 0.5,
-            'xanchor': 'center',
-            'font': dict(color="white")
-        },
-        xaxis=dict(
-            title=dict(text=f"{value} Ads in $1000", font=dict(color='white')),
-            tickfont=dict(color='white')
-        ),
-        yaxis=dict(
-            title=dict(text="Sales Revenue in Millions", font=dict(color='white')),
-            tickfont=dict(color='white')
-        ),
-        paper_bgcolor='black',
-        plot_bgcolor='black',
+            'xanchor': 'center'
+        }
     )
     fig.update_traces(
             selector=dict(mode='markers'),
@@ -186,19 +149,8 @@ def update_graph_3(value, hover_data):
         title={
             'text': f"{value} Impact on Sales",
             'x': 0.5,
-            'xanchor': 'center',
-            'font': dict(color="white")
-        },
-        xaxis=dict(
-            title=dict(text=f"{value} Ads in $1000", font=dict(color='white')),
-            tickfont=dict(color='white')
-        ),
-        yaxis=dict(
-            title=dict(text="Sales Revenue in Millions", font=dict(color='white')),
-            tickfont=dict(color='white')
-        ),
-        paper_bgcolor='black',
-        plot_bgcolor='black',
+            'xanchor': 'center'
+        }
     )
 
     fig.update_traces(
