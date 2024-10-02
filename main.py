@@ -746,16 +746,20 @@ app.layout = html.Div(
         }),
         dcc.Markdown(
             '''
-            👍 Potential Benefits 👍
+            👍 **Potential Benefits** 👍
+
             Quantum regression excels at capturing non-linear relationships in data, which classical linear models often miss. The expressive power of quantum circuits, utilizing entanglement and superposition, allows them to handle complex patterns naturally without the need for manually engineered features. This could give quantum models an edge in problems where traditional models struggle to fit non-linear dynamics. As quantum hardware improves, this potential will only grow, especially for tackling large, complex datasets.
 
-            👎 Current Drawbacks 👎
+            👎 **Current Drawbacks** 👎
+
             Despite its promise, quantum regression is currently slow and computationally expensive. Training requires many epochs to converge, and quantum simulators or hardware are still limited, making quantum models impractical for most users today. Classical models, on the other hand, are fast, accessible, and well-optimized for most datasets. Additionally, quantum models are harder to interpret, meaning the tradeoff for flexibility is a loss in transparency compared to classical methods like linear regression.
 
-            ⚛️ Should you use Quantum Computers for regression? ⚛️
+            ⚛️ **Should you use Quantum Computers for regression?** ⚛️
+
             For now, classical methods are more practical for most real-world regression problems, especially if your data is small or the relationships are simple. Quantum regression might be worth exploring if you’re dealing with highly complex, non-linear data and have access to the necessary computational resources. However, for most users, classical models like linear or polynomial regression will continue to be the go-to solution.
 
-            👩🏽‍⚖️ Final Verdict 👩🏽‍⚖️
+            👩🏽‍⚖️ **Final Verdict** 👩🏽‍⚖️
+
             Quantum regression is fascinating but still experimental. While its potential is enormous, especially for future large-scale applications, classical models are more efficient and accessible at present. If you’re interested in staying on the cutting edge of technology, exploring quantum computing now can be valuable, but for everyday tasks, classical regression remains the more sensible choice.
             ''',
             style={
