@@ -10,9 +10,9 @@
    ```
    pip install plotly dash pandas
    ```
-3. Then, run app.py (or app2.py, app3.py, etc.):
+3. Then, run almost_final_draft.py (or app2.py, app3.py, etc.):
    ```
-   python app.py
+   python almost_final_draft.py
    ```
 4. Copy and paste the http link into a web browser
 
