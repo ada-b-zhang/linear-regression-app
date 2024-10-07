@@ -8,16 +8,32 @@ from sklearn.preprocessing import StandardScaler
 
 df = pd.read_csv('Advertising.csv')
 TV_ads = df['TV'].values
+Radio_ads = df['Radio'].values
+Newspaper_ads = df['Newspaper'].values
 Total_sales = df['Sales'].values
 
-x_scaler = StandardScaler()
+tv_scaler = StandardScaler()
+radio_scaler = StandardScaler()
+newspaper_scaler = StandardScaler()
 y_scaler = StandardScaler()
-X = x_scaler.fit_transform(TV_ads.reshape(-1, 1)).flatten()
-Y = y_scaler.fit_transform(Total_sales.reshape(-1, 1)).flatten()
+scaler_map = {'TV': tv_scaler, 'Radio': radio_scaler, 'Newspaper': newspaper_scaler}
 
-x_scale = x_scaler.scale_[0]
-y_scale = y_scaler.scale_[0]
-weight_lists = np.load('weights.npy')
+TV_X = tv_scaler.fit_transform(TV_ads.reshape(-1, 1)).flatten()
+Radio_X = radio_scaler.fit_transform(Radio_ads.reshape(-1, 1)).flatten()
+Newspaper_X = newspaper_scaler.fit_transform(Newspaper_ads.reshape(-1, 1)).flatten()
+Y = y_scaler.fit_transform(Total_sales.reshape(-1, 1)).flatten()
+X_map = {'TV': TV_X, 'Radio': Radio_X, 'Newspaper': Newspaper_X}
+
+linspace_map = {'TV': np.linspace(-2, 2, 100), 'Radio': np.linspace(-2, 2, 100), 'Newspaper': np.linspace(-2, 4, 100)}
+
+
+# x_scale = x_scaler.scale_[0]
+# y_scale = y_scaler.scale_[0]
+tv_weights = np.load('TV-weights.npy')
+radio_weights = np.load('Radio-weights.npy')
+newspaper_weights= np.load('Newspaper-weights.npy')
+weights_map = {'TV': tv_weights, 'Radio': radio_weights, 'Newspaper': newspaper_weights}
+
 epoch_values = [0] + [i for i in range(9, 50, 10)] + [99, 149]
 app = Dash(suppress_callback_exceptions=True)
 
@@ -34,23 +50,37 @@ app.layout = html.Div(
                 value=epoch_values[0],
                 marks={epoch: str(epoch) for epoch in epoch_values},
                 tooltip={"placement": "bottom", "always_visible": True}
+            ),
+            html.P("Epoch #", style={'text-align': 'center', 'font-weight': 'bold'}),
+            dcc.Dropdown(
+                id='dropdown-input',
+                options=[
+                    {'label': 'TV', 'value': 'TV'},
+                    {'label': 'Radio', 'value': 'Radio'},
+                    {'label': 'Newspaper', 'value': 'Newspaper'},
+                ],
+                value='TV',
+                clearable=False
             )
         ]),
-        # html.Div(id='inputs-container', style={'display': 'none'}),
-        html.P("Epoch #", style={'text-align': 'center', 'font-weight': 'bold'})
     ]
 )
 @app.callback(
     Output('graph-output', 'figure'),
-    [Input('weight-slider', 'value')],
+    [Input('weight-slider', 'value'),
+     Input('dropdown-input', 'value')],
     prevent_initial_callback=True
 )
-def update_graph(epoch_value):
+def update_graph(epoch_value, ad_type):
     index = epoch_values.index(epoch_value)
+    weight_lists = weights_map[ad_type]
     weight_list = weight_lists[index]
-    original_X = x_scaler.inverse_transform(np.linspace(-2, 2, 100).reshape(-1, 1)).flatten()
+    x_scaler = scaler_map[ad_type]
+    X = X_map[ad_type]
+    linspace = linspace_map[ad_type]
+    original_X = x_scaler.inverse_transform(linspace.reshape(-1, 1)).flatten()
 
-    predicted_Y = [variational_regressor(x, weight_list) for x in np.linspace(-2, 2, 100)]
+    predicted_Y = [variational_regressor(x, weight_list) for x in linspace]
     unnormalized_Y = y_scaler.inverse_transform(np.array(predicted_Y).reshape(-1, 1)).flatten()
     
     
@@ -64,11 +94,11 @@ def update_graph(epoch_value):
     ))
     fig.update_layout(
         title={
-            'text': f"Quantum TV Predictions Per Epoch",
+            'text': f"Quantum {ad_type} Predictions Per Epoch",
             'x': 0.5,
             'xanchor': 'center'
         },
-        xaxis_title='TV Ads (in thousands)',
+        xaxis_title=f'{ad_type} Ads (in thousands)',
         yaxis_title='Total Sales (in millions)'
     )
     return fig

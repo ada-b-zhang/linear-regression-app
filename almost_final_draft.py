@@ -10,25 +10,34 @@ from sklearn.preprocessing import StandardScaler
 
 ############################################################################################################################################################
 # Open the dataset
-advertising_df = pd.read_csv('advertising.csv')
+advertising_df = pd.read_csv('Advertising.csv')
+TV_ads = advertising_df['TV'].values
+Radio_ads = advertising_df['Radio'].values
+Newspaper_ads = advertising_df['Newspaper'].values
+Total_sales = advertising_df['Sales'].values
 advertising_df = advertising_df.drop('Unnamed: 0', axis=1)
-df = pd.read_csv('Advertising.csv')
-TV_ads = df['TV'].values
-Total_sales = df['Sales'].values
 
-# stuff to do for graphs later
-min_TV = min(advertising_df['TV'])
-max_TV = max(advertising_df['TV'])
-
-x_scaler = StandardScaler()
+# Preparing variables and data for graphs
+tv_scaler = StandardScaler()
+radio_scaler = StandardScaler()
+newspaper_scaler = StandardScaler()
 y_scaler = StandardScaler()
-X = x_scaler.fit_transform(TV_ads.reshape(-1, 1)).flatten()
-Y = y_scaler.fit_transform(Total_sales.reshape(-1, 1)).flatten()
+scaler_map = {'TV': tv_scaler, 'Radio': radio_scaler, 'Newspaper': newspaper_scaler}
 
-x_scale = x_scaler.scale_[0]
-y_scale = y_scaler.scale_[0]
-weight_lists = np.load('weights.npy')
+TV_X = tv_scaler.fit_transform(TV_ads.reshape(-1, 1)).flatten()
+Radio_X = radio_scaler.fit_transform(Radio_ads.reshape(-1, 1)).flatten()
+Newspaper_X = newspaper_scaler.fit_transform(Newspaper_ads.reshape(-1, 1)).flatten()
+Y = y_scaler.fit_transform(Total_sales.reshape(-1, 1)).flatten()
+X_map = {'TV': TV_X, 'Radio': Radio_X, 'Newspaper': Newspaper_X}
+
+linspace_map = {'TV': np.linspace(-2, 2, 100), 'Radio': np.linspace(-2, 2, 100), 'Newspaper': np.linspace(-2, 4, 100)}
 epoch_values = [0] + [i for i in range(9, 50, 10)] + [99, 149]
+
+# Load the pretrained weights for each predictor
+tv_weights = np.load('TV-weights.npy')
+radio_weights = np.load('Radio-weights.npy')
+newspaper_weights= np.load('Newspaper-weights.npy')
+weights_map = {'TV': tv_weights, 'Radio': radio_weights, 'Newspaper': newspaper_weights}
 
 # for scatterplot graph
 intercepts = {i: i for i in range(-20, 21)}
@@ -926,8 +935,19 @@ app.layout = html.Div(
                         value=epoch_values[0],
                         marks={epoch: str(epoch) for epoch in epoch_values},
                         tooltip={"placement": "bottom", "always_visible": True}
-                    )
+                    ),
+                    dcc.Dropdown(
+                        id='dropdown-input',
+                        options=[
+                            {'label': 'TV', 'value': 'TV'},
+                            {'label': 'Radio', 'value': 'Radio'},
+                            {'label': 'Newspaper', 'value': 'Newspaper'},
+                        ],
+                        value='TV',
+                        clearable=False,
+                    ),
                 ], style={'max-width': '800px', 'margin': 'auto', 'margin-bottom': '60px'}),
+
                 html.P("Quantum model results for TV ads vs Sales. See how as epochs increase, the model adjusts its weights to better fit the data.", style={
                     'font-family': 'Lora, serif',
                     'font-size': '1rem',
@@ -936,7 +956,8 @@ app.layout = html.Div(
                     'max-width': '700px',
                     'margin': 'auto',
                     'margin-bottom': '60px'
-                })
+                }),
+                
             ],
             style={'textAlign': 'center'}
         ),
@@ -1138,22 +1159,38 @@ def display_scatter(intercept_dropdown, slope_dropdown, n_dropdown):
 # QUANTUM GRAPH: Callback for updating the quantum model graph based on the slider 
 @app.callback(
     Output('graph-output', 'figure'),
-    Input('weight-slider', 'value')
+    [Input('weight-slider', 'value'),
+     Input('dropdown-input', 'value')],
+    prevent_initial_callback=True
 )
-def update_quantum_graph(epoch_value):
+def update_graph(epoch_value, ad_type):
     index = epoch_values.index(epoch_value)
+    weight_lists = weights_map[ad_type]
     weight_list = weight_lists[index]
-    original_X = x_scaler.inverse_transform(np.linspace(-2, 2, 100).reshape(-1, 1)).flatten()
+    x_scaler = scaler_map[ad_type]
+    X = X_map[ad_type]
+    linspace = linspace_map[ad_type]
+    original_X = x_scaler.inverse_transform(linspace.reshape(-1, 1)).flatten()
 
-    predicted_Y = [variational_regressor(x, weight_list) for x in np.linspace(-2, 2, 100)]
+    predicted_Y = [variational_regressor(x, weight_list) for x in linspace]
     unnormalized_Y = y_scaler.inverse_transform(np.array(predicted_Y).reshape(-1, 1)).flatten()
-
+    
+    
     fig = px.scatter(x=x_scaler.inverse_transform(X.reshape(-1, 1)).flatten(),
-                     y=y_scaler.inverse_transform(Y.reshape(-1, 1)).flatten())
-    fig.add_trace(go.Scatter(x=original_X, y=unnormalized_Y, mode='lines', line=dict(color='red'), name='Fitted Line'))
+                      y=y_scaler.inverse_transform(Y.reshape(-1, 1)).flatten())
+    fig.add_trace(go.Scatter(x=original_X, 
+                            y=unnormalized_Y,
+                        mode='lines',
+                        line=dict(color='red'),
+                        name='Fitted Line'
+    ))
     fig.update_layout(
-        title={'text': "Quantum TV Predictions Per Epoch", 'x': 0.5, 'xanchor': 'center'},
-        xaxis_title='TV Advertisement Spending (in thousands)',
+        title={
+            'text': f"Quantum {ad_type} Predictions Per Epoch",
+            'x': 0.5,
+            'xanchor': 'center'
+        },
+        xaxis_title=f'{ad_type} Ads (in thousands)',
         yaxis_title='Total Sales (in millions)'
     )
     return fig
