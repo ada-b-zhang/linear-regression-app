@@ -15,13 +15,6 @@ fig1 = px.scatter(advertising_data,
                  x="TV", y="Sales", size='Newspaper',
                  color='Radio', trendline="ols",
                  title='Another way to see effects of several predictors on response:')
-# Create the image plot 
-# img_url = 'pic.png'
-# img = io.imread(img_url)
-# fig2 = px.imshow(img)    
-
-# app.layout = html.Div([dcc.Graph(id='scatter-plot',figure=fig1),
-#                        dcc.Graph(id='image-plot',figure=fig2)])
 app.layout = html.Div([dcc.Graph(id='scatter-plot',figure=fig1)])
 
 if __name__ == '__main__':

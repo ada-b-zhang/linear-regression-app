@@ -1,23 +1,35 @@
-############################################################################################################################################################
-# Import all packages
-from dash import Dash, html, dcc, Output, Input
+########################################################################################################################################################################################################################################################################################################################
+# IMPORTING PACKAGES
+########################################################################################################################################################################################################################################################################################################################
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from dash import Dash, html, dcc, Output, Input
+from dash.dependencies import Input, Output
 from helper_funcs import variational_regressor
 from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
 
-############################################################################################################################################################
-# Open the dataset
+
+
+########################################################################################################################################################################################################################################################################################################################
+# STUFF FOR THE GRAPHS
+########################################################################################################################################################################################################################################################################################################################
+"""
+These are just some variables and data needed to create the graphs. 
+"""
+
+# Dataset
 advertising_df = pd.read_csv('Advertising.csv')
+advertising_df = advertising_df.drop('Unnamed: 0', axis=1)
+
+# Prepare variables and data
 TV_ads = advertising_df['TV'].values
 Radio_ads = advertising_df['Radio'].values
 Newspaper_ads = advertising_df['Newspaper'].values
 Total_sales = advertising_df['Sales'].values
-advertising_df = advertising_df.drop('Unnamed: 0', axis=1)
 
-# Preparing variables and data for graphs
 tv_scaler = StandardScaler()
 radio_scaler = StandardScaler()
 newspaper_scaler = StandardScaler()
@@ -39,42 +51,54 @@ radio_weights = np.load('Radio-weights.npy')
 newspaper_weights= np.load('Newspaper-weights.npy')
 weights_map = {'TV': tv_weights, 'Radio': radio_weights, 'Newspaper': newspaper_weights}
 
-# for scatterplot graph
+# For "Make Your Own Scatterplot" graph
 intercepts = {i: i for i in range(-20, 21)}
 slopes = {i: i for i in range(-10, 11)}
 n = {i: i for i in range(101)}
 def generate_data(beta0, beta1, n, sigma=2):
     X = np.linspace(start=-10, stop=10, num=n).reshape(-1, 1)  # array w/ 1 column
-    epsilon = sigma * np.random.randn(n)  # Generate epsilon
-    y = beta0 + (beta1 * X.flatten()) + epsilon  # Generate y using SLR model
+    epsilon = sigma * np.random.randn(n)  # generate epsilon
+    y = beta0 + (beta1 * X.flatten()) + epsilon  # generate y using SLR model
     return X.flatten(), y, X.mean(), y.mean()
 
-############################################################################################################################################################
-# Initialize Dash app
+
+
+########################################################################################################################################################################################################################################################################################################################
+# INITIALIZE DASH APP
+########################################################################################################################################################################################################################################################################################################################
 app = Dash(
     suppress_callback_exceptions=True,
     external_stylesheets=[
         'https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Montserrat:wght@300&display=swap',
-        'https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap'
-    ]
-)
+        'https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap'])
 
-############################################################################################################################################################
-# CREATING DROPDOWN
+
+
+########################################################################################################################################################################################################################################################################################################################
+# CREATING DROPDOWN 
+########################################################################################################################################################################################################################################################################################################################
 # Create dropdown options by mapping column names to custom labels
 column_labels = {
     'TV': 'TV Advertising',
     'Radio': 'Radio Advertising',
-    'Newspaper': 'Newspaper Advertising'
-}
+    'Newspaper': 'Newspaper Advertising'}
 dropdown_options = [{'label': column_labels[col], 'value': col} for col in advertising_df.columns[:-1]]
 
-############################################################################################################################################################
+
+
+########################################################################################################################################################################################################################################################################################################################
 # CREATING THE LAYOUT
+########################################################################################################################################################################################################################################################################################################################
+"""
+There are comments to help indicate what each chunk of code does. 
+If you are on a mac, you can directly type emojis!
+
+"""
+
 app.layout = html.Div(
     children=[
 
-        # Title and Subtitle
+        # TITLE & SUBTITLE
         html.Header(
             children=[
                 html.H1("Linear Regression Demonstration", 
@@ -82,7 +106,7 @@ app.layout = html.Div(
                                                             # 'font-weight': 'bold',
                                                             'font-weight': '800',
                                                             'font-size': '4.0rem',
-                                                            'color': 'orange',
+                                                            'color': 'blue',
                                                             'textAlign': 'center',
                                                             'margin-bottom': '20px'}),
                 html.P("A Lesson and Demonstration on Linear Regression for any Audience", 
@@ -94,8 +118,7 @@ app.layout = html.Div(
                                                             'margin-bottom': '60px'})
             ]
         ),
-        # 1. TOPIC INTRO & MOTIVATION
-        # First paragraphs
+        # I. INTRODUCTION ############################################################################################
         html.Div(children=[
 
         html.H2("I. Introduction 😃", 
@@ -114,77 +137,74 @@ app.layout = html.Div(
                         html.Br(), html.Br(),
                         "To explain, think about a farmer selling oranges at a farmers market. Each orange that the farmer sells means more money earned. Let's denote the number of oranges sold as X and the profit earned as Y. In simple linear regression, X is the ", html.B("predictor"), " variable, and Y is the ", html.B("response"), " variable. Simple linear regression aims to quantify and estimate the relationship between X and Y. In our example, let's say that each orange costs $2. Therefore, we know that for each orange that the farmer sells, he makes $2. Or, to put this into statistical language, as X increases by 1, Y increases by 2. This is the essence of linear regression: how much the response Y increases/decreases as the predictor X increases/decreases.",
                         html.Br(), html.Br(),
-                        "Note: one orange for $2 is quite expensive! 🍊"], style={'font-family': 'Lora, serif',
-                                                                                     #  'font-weight': '700',
-                                                                                    'font-size': '1.25rem',
-                                                                                    'color': '#2c3e50',
-                                                                                    'textAlign': 'left',
-                                                                                    'max-width': '1000px',
-                                                                                    'margin': 'auto',
-                                                                                    'margin-bottom': '20px'}),
-        # 2. LESSON AND ILLUSTRATION OF THE BASICS
+                        "Note: one orange for $2 is quite expensive! 🍊"], 
+                        style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': 'auto',
+                                'margin-bottom': '20px'}),
+        # II. LESSON AND ILLUSTRATION OF THE BASICS ############################################################################################
         html.H2("II. Lesson and Illustration of the Basics 🤓", 
                                                 style={'font-family': 'Lora, serif',
                                                 'font-weight': '700',
                                                 'font-size': '2.5rem',
                                                 'color': '#2c3e50',
                                                 'textAlign': 'center',
-                                                # 'margin-left': '200px',
                                                 'margin-bottom': '20px',
                                                 'margin-top': '40px'}),
+
         # Heading for Linear Regression Explanation
         html.H2("How does Classical Linear Regression work?", 
                                                 style={'font-family': 'Montserrat, sans-serif',
                                                         'font-size': '2.0rem',
                                                         'textAlign': 'center',
-                                                        'color': 'grey',
-                                                        # 'margin-left': '200px',
-                                                        'margin-top': '30px',
-                                                        'margin-bottom': '30px'}),
-
+                                                        'color': 'black',
+                                                        'margin-top': '30px'
+                                                        }),
         # Normal explanation of Linear Regression
         html.P("Linear regression is one of the simplest and most widely used predictive modeling techniques. It models the relationship between a dependent variable and one or more independent variables. The objective is to find a linear equation that best fits the data points. This technique assumes that the relationship between the dependent and independent variables is linear, this is, a straight line can be drawn through the data points to find a relationship.", 
-                                                            style={ 'font-size': '1.25rem',
-                                                                    'font-family': 'Lora, serif',
-                                                                    'color': '#34495e',
-                                                                    'max-width': '1000px',
-                                                                    'margin': 'auto',
-                                                                    'margin-bottom': '20px',
-                                                                    'line-height': '1.2'}),
+                       style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': 'auto',
+                                'margin-bottom': '20px'}),
 
         # Mathematical explanation of Linear Regression
         html.P("In mathematical terms, the linear regression model can be represented as:", 
-                                                            style={'font-family': 'Lora, serif',
-                                                                    'font-size': '1.25rem',
-                                                                    'color': '#34495e',
-                                                                    'max-width': '1000px',
-                                                                    'margin': 'auto',
-                                                                    'margin-bottom': '10px',
-                                                                    'line-height': '1.2'
+                           style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': 'auto',
+                                'margin-bottom': '20px'
         }),
         dcc.Markdown("""
         $$
         y = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \dots + \\beta_n x_n + \epsilon
         $$
-        """, style={
-            'font-family': 'Lora, serif',
-            'font-size': '1.25rem',
-            'color': '#34495e',
-            'max-width': '1000px',
-            'margin': 'auto',
-            'margin-bottom': '20px',
-            'line-height': '1.2',
-            'textAlign': 'center'
-        }, mathjax=True),
+        """, 
 
-        html.P("Where:", style={
-            'font-family': 'Lora, serif',
-            'font-size': '1.25rem',
-            'color': '#34495e',
-            'max-width': '1000px',
-            'margin': 'auto',
-            'margin-bottom': '10px',
-            'line-height': '1.2'
+                style={'font-family': 'Lora, serif',
+                    'font-size': '1.25rem',
+                    'color': '#2c3e50',
+                    'textAlign': 'left',
+                    'max-width': '1000px',
+                    'margin': 'auto',
+                    'margin-bottom': '20px'}, mathjax=True),
+
+        html.P("Where:", 
+                       style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': 'auto',
+                                'margin-bottom': '20px'
         }),
         dcc.Markdown("""
         - $y$ is the **dependent** variable (the outcome we are trying to predict)
@@ -202,21 +222,20 @@ app.layout = html.Div(
         }, mathjax=True),
 
         html.H2("Assumptions of Regression", 
-                                                style={'font-family': 'Montserrat, sans-serif',
-                                                        'font-size': '2.0rem',
-                                                        'textAlign': 'center',
-                                                        'color': 'grey',
-                                                        # 'margin-left': '200px',
-                                                        'margin-top': '30px',
-                                                        'margin-bottom': '30px'}),
+                            style={'font-family': 'Montserrat, sans-serif',
+                                    'font-size': '2.0rem',
+                                    'textAlign': 'center',
+                                    'color': 'black',
+                                    'margin-top': '30px'}),
+
         html.P(["There are some ", html.B("assumptions"), " we need to make in order to perform linear regression:"], 
-                                                            style={'font-family': 'Lora, serif',
-                                                                    'font-size': '1.25rem',
-                                                                    'color': '#34495e',
-                                                                    'max-width': '1000px',
-                                                                    'margin': 'auto',
-                                                                    'margin-bottom': '10px',
-                                                                    'line-height': '1.2'
+                           style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': 'auto',
+                                'margin-bottom': '20px'
         }),
         dcc.Markdown("""
         - **Linearity**: X and Y have a linear relationship with each other 
@@ -224,33 +243,41 @@ app.layout = html.Div(
         - **Constant Variance**: also called **homoscedasticity**, the errors have constant variance (errors don't increase/decrease as X increases/decreases)
         - **Independence**: observations don't affect each other 
 
-        """,                                    style={'font-family': 'Lora, serif',
-                                                        'font-size': '1.25rem',
-                                                        'color': '#34495e',
-                                                        'max-width': '1000px',
-                                                        'margin': 'auto',
-                                                        'line-height': '1.5'}, 
+        """,                                    
+                            style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': 'auto',
+                                'margin-bottom': '20px'
+                                                        }, 
                                                 mathjax=True),
 
         html.H2("Now, it's time for you to explore!", 
                                                 style={'font-family': 'Montserrat, sans-serif',
                                                         'font-size': '2.0rem',
                                                         'textAlign': 'center',
-                                                        'color': 'grey',
-                                                        # 'margin-left': '200px',
-                                                        'margin-top': '30px',
-                                                        'margin-bottom': '30px'}),
+                                                        'color': 'black',
+                                                        'margin-top': '30px'}),
 
-        html.P("👇 Let's see how this looks in practical terms, by looking at some sample data of how different types of advertising channels impact sales 👇", style={
-            'font-family': 'Lora, serif',
-            'font-size': '1.5rem',
-            'color': '#34495e',
-            'max-width': '1000px',
-            'margin': 'auto',
-            'margin-bottom': '40px',
-            'line-height': '1.2',
-            'font-weight': '700'
-        }),
+        # html.P(["Have you ever wondered how interconnected the world is? Many things around us seem to have relationships with each other. For example, wingspan and height, caffeine intake and energy levels, study hours and exam scores, and money spent on advertisements and profit earned. However, is there a way we can quantify and visualize these relationships? More importantly, is there a way to empirically show the relationships around us? If only there were a statistical tool we can use to help us do these things…", 
+        #                 html.Br(), html.Br(),
+        #                 "An answer is ", html.B("linear regression"), ", which helps to quantify the relationship between ", html.B("quantitative (numeric)"), " variables.",
+        #                 html.Br(), html.Br(),
+        #                 "To explain, think about a farmer selling oranges at a farmers market. Each orange that the farmer sells means more money earned. Let's denote the number of oranges sold as X and the profit earned as Y. In simple linear regression, X is the ", html.B("predictor"), " variable, and Y is the ", html.B("response"), " variable. Simple linear regression aims to quantify and estimate the relationship between X and Y. In our example, let's say that each orange costs $2. Therefore, we know that for each orange that the farmer sells, he makes $2. Or, to put this into statistical language, as X increases by 1, Y increases by 2. This is the essence of linear regression: how much the response Y increases/decreases as the predictor X increases/decreases.",
+        #                 html.Br(), html.Br(),
+        #                 "Note: one orange for $2 is quite expensive! 🍊"], 
+        html.P(["Let's see how this looks in practical terms, by looking at some sample data of how different types of advertising channels impact sales. The red line is called the ", 
+                html.B("line of best fit"), ", or the ", html.B("fitted regression line"), ". ", 
+                "This line, represented by an equation, represents the ", html.B("model"), " that best fits our data👇"], 
+                        style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': 'auto',
+                                'margin-bottom': '20px'}),
 
         # GRAPH 1
         # Dropdown for selecting advertising type
@@ -274,20 +301,19 @@ app.layout = html.Div(
         }),
 
         # GRAPH 2
-        html.P("👇 You can also look at multiple predictors at one time 👇", style={
-            'font-family': 'Lora, serif',
-            'font-size': '1.5rem',
-            'color': '#34495e',
-            'max-width': '1000px',
-            'margin': 'auto',
-            'margin-bottom': '40px',
-            'line-height': '1.2',
-            'font-weight': '700'
-        }),
+        html.P("You can also look at multiple predictors at one time. If you have more than one predictor variable, you must use higher dimensions to visualize your data. 👇", 
+                        style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': 'auto',
+                                'margin-bottom': '0px'}),
 
         # dcc.Graph(id="3D_graph"),
-        html.Div([dcc.Graph(id='3D_graph')], style={'width': '45%', 'margin': '0 auto 10px', 'font-family': 'Lora, serif',}),
-        html.P("Feel free to filter to different values of TV:", style={'padding-left': '10%', 'padding-right': '10%'}),
+        html.Div([dcc.Graph(id='3D_graph')], 
+                 style={'width': '45%', 'margin': '0 auto 10px', 'font-family': 'Lora, serif',}),
+        html.P("Feel free to filter the data to different values of TV:", style={'padding-left': '10%', 'padding-right': '10%'}),
         html.Div(dcc.RangeSlider(id='range-slider',
                                 min=0,  
                                 max=300,
@@ -309,17 +335,45 @@ app.layout = html.Div(
             'margin-bottom': '40px'
         }),
 
-        # GRAPH 3: Normal Distritution 
-        html.P("👇 Let's take a look at the Normality assumption for classical linear regression 👇", style={
+        # GRAPH: PLANE OF BEST FIT
+        html.P(["Instead of a line of best fit, what would we have? In 3-dimensional space, we need something that is equivalent to a line in 2-dimensional space. In 3-dimensional space, the equivalent to the line of best fit is called the ",
+               html.B("plane of best fit"), "! 👇"], 
+                        style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': '0 auto',
+                                'margin-bottom': '0px'}),
+
+        html.Div([dcc.Graph(id='plane_of_best_fit')], 
+                 style={'width': '45%', 'margin': '0 auto 10px', 'font-family': 'Lora, serif',}),
+        html.P(id='plane_comment', style={
             'font-family': 'Lora, serif',
-            'font-size': '1.5rem',
-            'color': '#34495e',
-            'max-width': '1000px',
+            'font-size': '1rem',
+            'color': '#7f8c8d',
+            'text-align': 'center',
+            'max-width': '800px',
             'margin': 'auto',
-            'margin-bottom': '40px',
-            'line-height': '1.2',
-            'font-weight': '700'
+            'margin-top': '0px',
+            'margin-bottom': '40px'
         }),
+
+        # GRAPH: NORMAL DISTRIBUTION
+        html.P(["Let's take a look at the Normality assumption for classical linear regression. A ", 
+                html.B("Normal distribution "),
+                "has a symmetric, bell-shaped curve, with a ",
+                 html.B("mean "),
+                 "the center of your data) and ",
+                 html.B("standard deviation "), 
+                 "(how spread out your data is from the center). 👇"], 
+                        style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': 'auto',
+                                'margin-bottom': '20px'}),
         html.Div([dcc.Graph(id='normal_distribution_graph')], 
                  style={'width': '45%', 'margin': '0 auto 10px', 'font-family': 'Lora, serif'}),
         html.P(id='static_comment2', style={
@@ -372,16 +426,14 @@ app.layout = html.Div(
                                                         'margin': '0 auto 20px'}),
 
         # GRAPH 4: Make your own scatterplot
-        html.P("👇 Make your own scatterplot! 👇", style={
-            'font-family': 'Lora, serif',
-            'font-size': '1.5rem',
-            'color': '#34495e',
-            'max-width': '1000px',
-            'margin': 'auto',
-            'margin-bottom': '40px',
-            'line-height': '1.2',
-            'font-weight': '700'
-        }),
+        html.P("Now that you've learned the basics of linear regression, it's time for you to have some fun! Try making your own scatterplot! 👇", 
+                        style={'font-family': 'Lora, serif',
+                                'font-size': '1.25rem',
+                                'color': '#2c3e50',
+                                'textAlign': 'left',
+                                'max-width': '1000px',
+                                'margin': 'auto',
+                                'margin-bottom': '20px'}),
         
         html.Div([dcc.Graph(id="scatterplot_graph")], 
                  style={'width': '45%', 'margin': '0 auto 10px', 'font-family': 'Lora, serif'}),
@@ -490,51 +542,49 @@ app.layout = html.Div(
 
 
 
-        # 3. TOPIC EXTENSIONS
+        # III. BEYOND REGRESSION: TAKING REGRESSION TO THE NEXT STEP ############################################################################################
         html.H2("III. Beyond Regression: Taking Regression to the Next Step ⏭️", 
                                                 style={'font-family': 'Lora, serif',
                                                 'font-weight': '700',
                                                 'font-size': '2.5rem',
                                                 'color': '#2c3e50',
                                                 'textAlign': 'center',
-                                                # 'margin-left': '200px',
                                                 'margin-bottom': '20px',
                                                 'margin-top': '40px'}),
 
-        # Add horizontal bar
-        html.Hr(style={
-            'border': '1px solid #34495e',
-            'width': '80%',
-            'margin': '40px auto'
-        }),
+        # # Add horizontal bar
+        # html.Hr(style={
+        #     'border': '1px solid #34495e',
+        #     'width': '80%',
+        #     'margin': '40px auto'
+        # }),
 
         html.P("This concept seems simple enough and quite straightforward on Classical computing with Simple Linear Regression. Then what's the fuss about Quantum computing? ⚛️", style={
-            'font-family': 'Lora, serif',
-            'font-size': '1.5rem',
-            'color': '#34495e',
-            'max-width': '1000px',
-            'margin': 'auto',
-            'margin-bottom': '40px',
-            'line-height': '1.2',
-            'font-weight': '700'
-        }),
-
-        # Add horizontal bar
-        html.Hr(style={
-            'border': '1px solid #34495e',
-            'width': '80%',
-            'margin': '40px auto'
-        }),
-
-        html.H2("What is a Quantum Computer?", style={
-            'font-family': 'Lora, serif',
-            'font-weight': '700',
-            'font-size': '2.5rem',
-            'color': '#2c3e50',
+            'font-family': 'Montserrat, sans-serif',
+            'font-size': '2.0rem',
             'textAlign': 'center',
-            'margin-bottom': '20px',
-            'margin-top': '40px'
+            'color': 'grey',
+            'margin-top': '30px',
+            'max-width': '1000px',
+            'margin': 'auto'
+            # 'margin-bottom': '40px',
+            # 'line-height': '1.2',
+            # 'font-weight': '500'
         }),
+
+        # # Add horizontal bar
+        # html.Hr(style={
+        #     'border': '1px solid #34495e',
+        #     'width': '80%',
+        #     'margin': '40px auto'
+        # }),
+
+        html.H2("What is a Quantum Computer?", 
+                        style={'font-family': 'Montserrat, sans-serif',
+                        'font-size': '2.0rem',
+                        'textAlign': 'center',
+                        'color': 'black',
+                        'margin-top': '30px'}),
 
         html.P("Alright, let's start by reimagining what a computer can be. Classical computers process information using bits—those simple 0s and 1s that act like tiny light switches, either on or off.  Quantum computers, on the other hand, use qubits (quantum bits), which can be a 0, a 1, or even both 0 and 1 at the same time. This ability to be in multiple states at once is called superposition. Think of a spinning coin: while it's spinning, you can't say if it's heads or tails—it's sort of both until it lands. Quantum computers use this strange property to perform many calculations in parallel, unlike regular computers that focus on one task at a time.", style={
             'font-family': 'Lora, serif',
@@ -595,22 +645,12 @@ app.layout = html.Div(
             'margin-bottom': '40px'
         }),
 
-        # Add horizontal bar
-        html.Hr(style={
-            'border': '1px solid #34495e',
-            'width': '80%',
-            'margin': '40px auto'
-        }),
-
-        html.H2("The Core Concepts of Quantum Computing ⚛️", style={
-            'font-family': 'Lora, serif',
-            'font-weight': '700',
-            'font-size': '2.5rem',
-            'color': '#2c3e50',
-            'textAlign': 'center',
-            'margin-bottom': '20px',
-            'margin-top': '40px'
-        }),
+        html.H2("The Core Concepts of Quantum Computing ⚛️", 
+                    style={'font-family': 'Montserrat, sans-serif',
+                    'font-size': '2.0rem',
+                    'textAlign': 'center',
+                    'color': 'black',
+                    'margin-top': '30px'}),
 
         html.P([
             html.Strong("1. Superposition: "),
@@ -682,23 +722,28 @@ app.layout = html.Div(
             'line-height': '1.2',
             'font-weight': '700'
         }),
-        # Add horizontal bar
-        html.Hr(style={
-            'border': '1px solid #34495e',
-            'width': '80%',
-            'margin': '40px auto'
-        }),
 
-        html.H2("Regression using Quantum Computers", style={
+        # IV. BEYOND REGRESSION: RERESSIONG USING QUANTUM COMPUTERS ############################################################################################
+        html.H2("IV. Beyond Regression: Regression using Quantum Computers 💻", style={
             'font-family': 'Lora, serif',
             'font-weight': '700',
             'font-size': '2.5rem',
             'color': '#2c3e50',
-            'textAlign': 'left',
-            'margin-left': '200px',
+            'textAlign': 'center',
             'margin-bottom': '20px',
             'margin-top': '40px'
         }),
+
+
+            # html.H2("I. Introduction 😃", 
+        #                                     style={'font-family': 'Lora, serif',
+        #                                     'font-weight': '700',
+        #                                     'font-size': '2.5rem',
+        #                                     'color': '#2c3e50',
+        #                                     'textAlign': 'center',
+        #                                     'margin-bottom': '20px',
+        #                                     'margin-top': '40px'}),
+
 
         html.P("Just like in classical machine learning, the goal of quantum regression is to minimize the error between our predicted values and the actual data. However, in this case, we're using a ⚛️ Variational Quantum Circuit ⚛️ to make the predictions, which introduces several important differences from traditional regression models.", style={
             'font-family': 'Lora, serif',
@@ -1028,211 +1073,182 @@ app.layout = html.Div(
             'line-height': '1.2'
         }),
 
-        html.P("Why Quantum Computing is Less Suited for Linear Regression 📉", style={
+        html.P("Why Quantum Computing is Less Suited for Linear Regression 📉", 
+                style={'font-family': 'Montserrat, sans-serif',
+                        'font-size': '2.0rem',
+                        'textAlign': 'center',
+                        'color': 'black',
+                        'margin-top': '30px'}),
+
+        html.P("While quantum computers can outperform classical ones for certain tasks, linear regression is a problem that classical machines already handle very well. Here are some reasons why quantum computing might not be the best choice for linear regression:", style={
             'font-family': 'Lora, serif',
-            'font-size': '1.5rem',
+            'font-size': '1.25rem',
             'color': '#34495e',
             'max-width': '1000px',
             'margin': 'auto',
-            'margin-top': '40px',
-            'margin-bottom': '40px',
-            'line-height': '1.2',
-            'font-weight': '700'
+            'margin-bottom': '20px',
+            'line-height': '1.2'
         }),
 
-        html.Hr(style={
-            'border': '1px solid #34495e',
-            'width': '80%',
-            'margin': '40px auto'
-        }),
-
-
-html.P("While quantum computers can outperform classical ones for certain tasks, linear regression is a problem that classical machines already handle very well. Here are some reasons why quantum computing might not be the best choice for linear regression:", style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '20px',
-    'line-height': '1.2'
-}),
-
-html.P([html.Strong("1. Linear Regression is a Deterministic Task"), ": Linear regression is based on finding a line (or plane) that best fits a dataset by minimizing the distance between the predicted and actual values. The equations that describe this are linear and can be solved deterministically using methods like Ordinary Least Squares (OLS). These are algebraically straightforward tasks that classical computers can handle in a few quick steps."], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '20px',
-    'line-height': '1.2'
-}),
-
-html.P([html.Strong("Quantum Advantage? "), "Quantum computers shine when solving complex, non-linear problems or tasks that involve searching through large solution spaces. However, linear regression doesn't involve the kind of combinatorial complexity that quantum computers are designed to tackle. The parallelism offered by quantum superposition and entanglement doesn't provide a significant advantage in this case."], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '20px',
-    'line-height': '1.2'
-}),
-
-html.P([html.Strong("2. Quantum Noise and Instability"), ": Quantum computers are incredibly sensitive to external interference, known as quantum noise. Even the smallest environmental disturbance can cause errors in a quantum system. For simple problems like linear regression, the precision required to calculate regression coefficients may be disrupted by quantum noise."], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '10px',
-    'line-height': '1.2'
-}),
-
-html.P([html.Strong("Classical computers"), " on the other hand, are deterministic and don't face these noise-related issues, making them much more reliable for tasks that require precise, numerical solutions."], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '20px',
-    'line-height': '1.2'
-}),
-
-html.P([html.Strong("3. Overhead in Quantum Algorithms"), ": Quantum machine learning algorithms, such as Variational Quantum Circuits (VQCs), are capable of performing tasks like regression. These circuits optimize a set of parameters to reduce the error between the predicted and actual outputs, similar to how classical algorithms like gradient descent work. However, training a quantum model involves a high degree of overhead in terms of iterations, measurements, and parameter updates."], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '20px',
-    'line-height': '1.2'
-}),
-
-html.P("For linear regression, where the relationship between variables is straightforward, the classical approach reaches a solution quickly with no need for iterative quantum parameter tuning. The extra complexity introduced by quantum circuits doesn't add much benefit for such a simple, linear problem.", style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '20px',
-    'line-height': '1.2'
-}),
-
-html.P([html.Strong("4. Limited Hardware and Qubit Resources"), ": Quantum computers are still in the early stages of development, and the number of qubits available on today's quantum machines is limited. Additionally, these qubits are prone to errors, and performing tasks like error correction consumes even more qubit resources. When it comes to linear regression, which classical computers can handle with ease even on large datasets, the current state of quantum hardware is often overkill."], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '10px',
-    'line-height': '1.2'
-}),
-
-html.P("Classical systems can easily handle datasets with thousands or millions of records for regression analysis, while quantum computers are still limited in how much data they can process efficiently.", style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '20px',
-    'line-height': '1.2'
-}),
-
-html.P([html.Strong("5. Better Suited for Non-Linear Models"), ": Quantum computers truly shine when they're applied to non-linear problems. In quantum-enhanced models, such as Quantum Support Vector Machines (QSVMs) or Quantum Neural Networks (QNNs), the quantum computer is able to exploit its unique properties to map data into higher-dimensional spaces and uncover hidden patterns in complex datasets."], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '20px',
-    'line-height': '1.2'
-}),
-
-html.P("However, linear regression is fundamentally about finding linear relationships, which classical methods handle perfectly. Quantum computing might introduce non-linearity where it isn't needed, making it an unnecessary and overly complex approach for this task.", style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '30px',
-    'line-height': '1.2'
-}),
-
-html.P("When Quantum Computing Can Help in Regression Tasks", style={
+        html.P([html.Strong("1. Linear Regression is a Deterministic Task"), ": Linear regression is based on finding a line (or plane) that best fits a dataset by minimizing the distance between the predicted and actual values. The equations that describe this are linear and can be solved deterministically using methods like Ordinary Least Squares (OLS). These are algebraically straightforward tasks that classical computers can handle in a few quick steps."], style={
             'font-family': 'Lora, serif',
-            'font-size': '1.5rem',
+            'font-size': '1.25rem',
             'color': '#34495e',
             'max-width': '1000px',
             'margin': 'auto',
-            'margin-top': '40px',
-            'margin-bottom': '40px',
-            'line-height': '1.2',
-            'font-weight': '700'
+            'margin-bottom': '20px',
+            'line-height': '1.2'
         }),
 
-        html.Hr(style={
-            'border': '1px solid #34495e',
-            'width': '80%',
-            'margin': '40px auto'
-        }),
-        
-        html.P("Though quantum computers might not excel at simple linear regression, there are certain scenarios where quantum techniques can improve regression models:", style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '20px',
-    'line-height': '1.2'
-    }),
-
-html.P([html.Strong("1. Quantum Kernel Methods"), ": Quantum computers can be used to project data into a higher-dimensional feature space using quantum feature maps. In this space, classical linear models can capture complex, non-linear relationships that they would otherwise miss. This approach is useful for tasks like non-linear regression or problems with complicated datasets that exhibit subtle relationships between variables."], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '20px',
-    'line-height': '1.2'
-}),
-
-html.P([html.Strong("2. Quantum-Assisted Regularization"), ": In high-dimensional datasets, regularization techniques such as Ridge regression or Lasso regression are used to prevent overfitting. Quantum algorithms can assist in optimizing these regularization parameters more efficiently, offering a quantum advantage in certain types of large-scale regression tasks."], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '10px',
-    'line-height': '1.2'
-}),
-
-html.P([html.Strong("3. Quantum Optimization"), ": Some regression tasks require solving optimization problems, especially when the objective function is non-convex. In these cases, quantum algorithms like Quantum Approximate Optimization Algorithm (QAOA) can be used to find global minima faster than classical optimization techniques."], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '10px',
-    'line-height': '1.2'
-}),
-
-html.P("Conclusion: Classical vs. Quantum for Linear Regression", style={
+        html.P([html.Strong("Quantum Advantage? "), "Quantum computers shine when solving complex, non-linear problems or tasks that involve searching through large solution spaces. However, linear regression doesn't involve the kind of combinatorial complexity that quantum computers are designed to tackle. The parallelism offered by quantum superposition and entanglement doesn't provide a significant advantage in this case."], style={
             'font-family': 'Lora, serif',
-            'font-size': '1.5rem',
+            'font-size': '1.25rem',
             'color': '#34495e',
             'max-width': '1000px',
             'margin': 'auto',
-            'margin-top': '40px',
-            'margin-bottom': '40px',
-            'line-height': '1.2',
-            'font-weight': '700'
+            'margin-bottom': '20px',
+            'line-height': '1.2'
         }),
 
-        html.Hr(style={
-            'border': '1px solid #34495e',
-            'width': '80%',
-            'margin': '40px auto'
+        html.P([html.Strong("2. Quantum Noise and Instability"), ": Quantum computers are incredibly sensitive to external interference, known as quantum noise. Even the smallest environmental disturbance can cause errors in a quantum system. For simple problems like linear regression, the precision required to calculate regression coefficients may be disrupted by quantum noise."], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '10px',
+            'line-height': '1.2'
         }),
-   
+
+        html.P([html.Strong("Classical computers"), " on the other hand, are deterministic and don't face these noise-related issues, making them much more reliable for tasks that require precise, numerical solutions."], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '20px',
+            'line-height': '1.2'
+        }),
+
+        html.P([html.Strong("3. Overhead in Quantum Algorithms"), ": Quantum machine learning algorithms, such as Variational Quantum Circuits (VQCs), are capable of performing tasks like regression. These circuits optimize a set of parameters to reduce the error between the predicted and actual outputs, similar to how classical algorithms like gradient descent work. However, training a quantum model involves a high degree of overhead in terms of iterations, measurements, and parameter updates."], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '20px',
+            'line-height': '1.2'
+        }),
+
+        html.P("For linear regression, where the relationship between variables is straightforward, the classical approach reaches a solution quickly with no need for iterative quantum parameter tuning. The extra complexity introduced by quantum circuits doesn't add much benefit for such a simple, linear problem.", style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '20px',
+            'line-height': '1.2'
+        }),
+
+        html.P([html.Strong("4. Limited Hardware and Qubit Resources"), ": Quantum computers are still in the early stages of development, and the number of qubits available on today's quantum machines is limited. Additionally, these qubits are prone to errors, and performing tasks like error correction consumes even more qubit resources. When it comes to linear regression, which classical computers can handle with ease even on large datasets, the current state of quantum hardware is often overkill."], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '10px',
+            'line-height': '1.2'
+        }),
+
+        html.P("Classical systems can easily handle datasets with thousands or millions of records for regression analysis, while quantum computers are still limited in how much data they can process efficiently.", style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '20px',
+            'line-height': '1.2'
+        }),
+
+        html.P([html.Strong("5. Better Suited for Non-Linear Models"), ": Quantum computers truly shine when they're applied to non-linear problems. In quantum-enhanced models, such as Quantum Support Vector Machines (QSVMs) or Quantum Neural Networks (QNNs), the quantum computer is able to exploit its unique properties to map data into higher-dimensional spaces and uncover hidden patterns in complex datasets."], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '20px',
+            'line-height': '1.2'
+        }),
+
+        html.P("However, linear regression is fundamentally about finding linear relationships, which classical methods handle perfectly. Quantum computing might introduce non-linearity where it isn't needed, making it an unnecessary and overly complex approach for this task.", style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '30px',
+            'line-height': '1.2'
+        }),
+
+        html.P("When Quantum Computing Can Help in Regression Tasks", 
+                                        style={'font-family': 'Montserrat, sans-serif',
+                                                'font-size': '2.0rem',
+                                                'textAlign': 'center',
+                                                'color': 'black',
+                                                'margin-top': '30px'}),
+                
+                html.P("Though quantum computers might not excel at simple linear regression, there are certain scenarios where quantum techniques can improve regression models:", style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '20px',
+            'line-height': '1.2'
+            }),
+
+        html.P([html.Strong("1. Quantum Kernel Methods"), ": Quantum computers can be used to project data into a higher-dimensional feature space using quantum feature maps. In this space, classical linear models can capture complex, non-linear relationships that they would otherwise miss. This approach is useful for tasks like non-linear regression or problems with complicated datasets that exhibit subtle relationships between variables."], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '20px',
+            'line-height': '1.2'
+        }),
+
+        html.P([html.Strong("2. Quantum-Assisted Regularization"), ": In high-dimensional datasets, regularization techniques such as Ridge regression or Lasso regression are used to prevent overfitting. Quantum algorithms can assist in optimizing these regularization parameters more efficiently, offering a quantum advantage in certain types of large-scale regression tasks."], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '10px',
+            'line-height': '1.2'
+        }),
+
+        html.P([html.Strong("3. Quantum Optimization"), ": Some regression tasks require solving optimization problems, especially when the objective function is non-convex. In these cases, quantum algorithms like Quantum Approximate Optimization Algorithm (QAOA) can be used to find global minima faster than classical optimization techniques."], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '10px',
+            'line-height': '1.2'
+        }),
+
+
+
+# V. Conclusion ################################################################################################################################################
+        html.P("V. Conclusion: Classical vs. Quantum for Linear Regression 🧐", style={
+                    'font-family': 'Lora, serif',
+                    'font-weight': '700',
+                    'font-size': '2.5rem',
+                    'color': '#2c3e50',
+                    'textAlign': 'center',
+                    'margin-top': '40px',
+                    'margin-bottom': '40px'
+                }),
 
 
         dcc.Markdown(
@@ -1261,12 +1277,22 @@ html.P("Conclusion: Classical vs. Quantum for Linear Regression", style={
     ]
 )
 
-############################################################################################################################################################
-# STUFF FOR THE GRAPHS
-############################################################################################################################################################
 
-##################################################################################################################################
-# GRAPH 1: Callback for updating the FIRST graph and dynamic comment based on dropdown 
+
+########################################################################################################################################################################################################################################################################################################################
+# MAKING THE GRAPHS
+########################################################################################################################################################################################################################################################################################################################
+"""
+Hey everyone,
+
+Each section below corresponds to one of the graphs in the previous section, called "CREATING THE LAYOUT".
+The X in Output('X', 'figure' ) is what connects to the corresponding graph in "CREATING THE LAYOUT".
+Therefore, if you want to quickly access the corresponding graph in "CREATING THE LAYOUT", do Ctrl+F and type what is in place of X.
+
+- Ada 
+"""
+
+# GRAPH 1: Callback for updating the FIRST graph and dynamic comment based on dropdown ########################################################################################################################################################################################################################################################################################################################
 @app.callback(
     Output('graph-content', 'figure'),
     Output('dynamic-comment', 'children'),
@@ -1275,6 +1301,10 @@ html.P("Conclusion: Classical vs. Quantum for Linear Regression", style={
 def update_graph_and_comment(value):
     # Update graph
     fig = px.scatter(advertising_df, x=value, y='Sales', trendline="ols")
+    fig.update_traces(marker=dict(color='blue'), selector=dict(mode='markers'))
+
+    fig.update_traces(line=dict(color='red'), selector=dict(mode='lines'))
+
     fig.update_layout(
         title={'text': f"{value} Impact on Sales", 'x': 0.5, 'xanchor': 'center'},
         hovermode='closest'
@@ -1305,10 +1335,49 @@ def update_bar_chart(slider_range):
         z='Sales',
         hover_data=['TV'])
 
-    fig_3D_graph.update_traces(marker=dict(color='green'))  
+    fig_3D_graph.update_traces(marker=dict(color='blue'))  
     
     comment = ["Using multiple predictors is called ", html.B("multiple linear regression"), ". Using only one predictor is called ", html.B("simple linear regression"), "."]
     return fig_3D_graph, comment
+
+##################################################################################################################################
+# GRAPH 3: PLANE OF BEST FIT
+model = LinearRegression() # this fits MLR model
+X = advertising_df[['TV', 'Radio']]
+y = advertising_df['Sales'] 
+model.fit(X, y)
+y_pred = model.predict(X)
+
+tv_range = np.linspace(X['TV'].min(), X['TV'].max(), 100)
+radio_range = np.linspace(X['Radio'].min(), X['Radio'].max(), 100)
+tv_grid, radio_grid = np.meshgrid(tv_range, radio_range)
+
+@app.callback(
+    Output('plane_of_best_fit', 'figure'),
+    Output("plane_comment", "children"), 
+    Input('plane_of_best_fit', 'id')  
+)
+def update_graph(_):
+    X_grid = np.column_stack([tv_grid.ravel(), radio_grid.ravel()])
+    y_grid_pred = model.predict(X_grid).reshape(tv_grid.shape)
+    fig = go.Figure(data=[go.Surface(z=y_grid_pred, x=tv_grid, y=radio_grid, colorscale='Viridis', opacity=0.7)])
+    fig.add_trace(go.Scatter3d(
+        x=X['TV'], 
+        y=X['Radio'], 
+        z=y, 
+        mode='markers', 
+        marker=dict(size=4, color='blue'), 
+        name='Original Data'))
+    fig.update_layout(
+        scene=dict(
+            xaxis_title="TV Advertising Spend ($)",
+            yaxis_title="Radio Advertising Spend ($)",
+            zaxis_title="Sales ($)"),
+        width=800,
+        height=600)
+    comment = ['This is called the ', html.B("plane of best fit"), '.']
+
+    return fig, comment
 
 
 ##################################################################################################################################
@@ -1321,7 +1390,7 @@ def update_bar_chart(slider_range):
     Input("sample_size", "value"))
 def display_color(mean, std, sample_size):
     data = np.random.normal(mean, std, size=sample_size) 
-    fig = px.histogram(data, range_x=[-10, 10], nbins=50, color_discrete_sequence=['orange'])
+    fig = px.histogram(data, range_x=[-10, 10], nbins=50, color_discrete_sequence=['blue'])
     fig.data[0].showlegend = False
     comment = ["Visualizing the ", html.B("Normal distribution"), ", one of the assumptions for regression. Try changing the mean, standard deviation, and/or sample size. How does the distribution change?"]
     return fig, comment
@@ -1329,6 +1398,7 @@ def display_color(mean, std, sample_size):
 
 ##################################################################################################################################
 # GRAPH 4: Make your own scatterplot
+
 @app.callback(
     Output("scatterplot_graph", "figure"), 
     Output("scatterplot_comment", "children"), 
@@ -1341,7 +1411,7 @@ def display_scatter(intercept_dropdown, slope_dropdown, n_dropdown):
     if intercept_dropdown is None:
         intercept_dropdown = 0
     x_data, y_data, x_mean, y_mean = generate_data(intercept_dropdown, slope_dropdown, n_dropdown)
-    fig = px.scatter(x=x_data, y=y_data, trendline='ols', color_discrete_sequence=["black"])
+    fig = px.scatter(x=x_data, y=y_data, trendline='ols', color_discrete_sequence=["blue"])
     fig.update_traces(line=dict(color="black"))
     fig.add_vline(x=x_mean, line_dash="dash", line_color="red")
     fig.add_hline(y=y_mean, line_dash="dash", line_color="red")
@@ -1392,7 +1462,8 @@ def update_graph(epoch_value, ad_type):
 
 
 
-##################################################################################################################################
-# Run the app
+########################################################################################################################################################################################################################################################################################################################
+# RUN THE APP
+########################################################################################################################################################################################################################################################################################################################
 if __name__ == '__main__':
     app.run(debug=True)
