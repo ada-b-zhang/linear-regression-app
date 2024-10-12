@@ -1317,7 +1317,8 @@ def display_color(mean, std, sample_size):
     Output("scatterplot_comment", "children"), 
     Input("intercept_dropdown", "value"), 
     Input("slope_dropdown", "value"),
-    Input("n_dropdown", "value")
+    Input("n_dropdown", "value"),
+    prevent_initial_callback=True
 )
 def display_scatter(intercept_dropdown, slope_dropdown, n_dropdown):
     x_data, y_data, x_mean, y_mean = generate_data(intercept_dropdown, slope_dropdown, n_dropdown)
