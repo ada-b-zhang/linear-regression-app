@@ -112,7 +112,7 @@ app.layout = html.Div(
                         html.Br(), html.Br(),
                         "An answer is ", html.B("linear regression"), ", which helps to quantify the relationship between ", html.B("quantitative (numeric)"), " variables.",
                         html.Br(), html.Br(),
-                        "To explain, think about a farmer selling oranges at a farmers market. Each orange that the farmer sells means more money earned. Let’s denote the number of oranges sold as X and the profit earned as Y. In simple linear regression, X is the ", html.B("predictor"), " variable, and Y is the ", html.B("response"), " variable. Simple linear regression aims to quantify and estimate the relationship between X and Y. In our example, let’s say that each orange costs $2. Therefore, we know that for each orange that the farmer sells, he makes $2. Or, to put this into statistical language, as X increases by 1, Y increases by 2. This is the essence of linear regression: how much the response Y increases/decreases as the predictor X increases/decreases.",
+                        "To explain, think about a farmer selling oranges at a farmers market. Each orange that the farmer sells means more money earned. Let's denote the number of oranges sold as X and the profit earned as Y. In simple linear regression, X is the ", html.B("predictor"), " variable, and Y is the ", html.B("response"), " variable. Simple linear regression aims to quantify and estimate the relationship between X and Y. In our example, let's say that each orange costs $2. Therefore, we know that for each orange that the farmer sells, he makes $2. Or, to put this into statistical language, as X increases by 1, Y increases by 2. This is the essence of linear regression: how much the response Y increases/decreases as the predictor X increases/decreases.",
                         html.Br(), html.Br(),
                         "Note: one orange for $2 is quite expensive! 🍊"], style={'font-family': 'Lora, serif',
                                                                                      #  'font-weight': '700',
@@ -221,8 +221,8 @@ app.layout = html.Div(
         dcc.Markdown("""
         - **Linearity**: X and Y have a linear relationship with each other 
         - **Normality**: the errors follow a Normal (Gaussian) distribution
-        - **Constant Variance**: also called **homoscedasticity**, the errors have constant variance (errors don’t increase/decrease as X increases/decreases)
-        - **Independence**: observations don’t affect each other 
+        - **Constant Variance**: also called **homoscedasticity**, the errors have constant variance (errors don't increase/decrease as X increases/decreases)
+        - **Independence**: observations don't affect each other 
 
         """,                                    style={'font-family': 'Lora, serif',
                                                         'font-size': '1.25rem',
@@ -371,7 +371,7 @@ app.layout = html.Div(
                                                         'padding-right': '10%', 
                                                         'margin': '0 auto 20px'}),
 
-    # GRAPH 4: Make your own scatterplot
+        # GRAPH 4: Make your own scatterplot
         html.P("👇 Make your own scatterplot! 👇", style={
             'font-family': 'Lora, serif',
             'font-size': '1.5rem',
@@ -532,12 +532,11 @@ app.layout = html.Div(
             'font-size': '2.5rem',
             'color': '#2c3e50',
             'textAlign': 'center',
-            'margin-left': '200px',
             'margin-bottom': '20px',
             'margin-top': '40px'
         }),
 
-        html.P("Alright, let’s start by reimagining what a computer can be. Classical computers process information using bits—those simple 0s and 1s that act like tiny light switches, either on or off.  Quantum computers, on the other hand, use qubits (quantum bits), which can be a 0, a 1, or even both 0 and 1 at the same time. This ability to be in multiple states at once is called superposition. Think of a spinning coin: while it’s spinning, you can’t say if it’s heads or tails—it’s sort of both until it lands. Quantum computers use this strange property to perform many calculations in parallel, unlike regular computers that focus on one task at a time.", style={
+        html.P("Alright, let's start by reimagining what a computer can be. Classical computers process information using bits—those simple 0s and 1s that act like tiny light switches, either on or off.  Quantum computers, on the other hand, use qubits (quantum bits), which can be a 0, a 1, or even both 0 and 1 at the same time. This ability to be in multiple states at once is called superposition. Think of a spinning coin: while it's spinning, you can't say if it's heads or tails—it's sort of both until it lands. Quantum computers use this strange property to perform many calculations in parallel, unlike regular computers that focus on one task at a time.", style={
             'font-family': 'Lora, serif',
             'font-size': '1.25rem',
             'color': '#34495e',
@@ -546,7 +545,7 @@ app.layout = html.Div(
             'margin-bottom': '10px',
             'line-height': '1.2'
         }),
-        html.P("How does this occur? Thanks to entanglement, a phenomenon where two qubits become so deeply connected that whatever happens to one instantly affects the other—even if they’re separated by vast distances. This allows qubits to work together in ways classical bits never could, enabling quantum computers to solve complex problems by sharing and processing information much faster. For certain types of problems, like finding hidden patterns in large datasets, entangled qubits give quantum computers exponential power.", style={
+        html.P("How does this occur? Thanks to entanglement, a phenomenon where two qubits become so deeply connected that whatever happens to one instantly affects the other—even if they're separated by vast distances. This allows qubits to work together in ways classical bits never could, enabling quantum computers to solve complex problems by sharing and processing information much faster. For certain types of problems, like finding hidden patterns in large datasets, entangled qubits give quantum computers exponential power.", style={
             'font-family': 'Lora, serif',
             'font-size': '1.25rem',
             'color': '#34495e',
@@ -595,45 +594,63 @@ app.layout = html.Div(
             'line-height': '0.7',
             'margin-bottom': '40px'
         }),
+
+        # Add horizontal bar
+        html.Hr(style={
+            'border': '1px solid #34495e',
+            'width': '80%',
+            'margin': '40px auto'
+        }),
+
+        html.H2("The Core Concepts of Quantum Computing ⚛️", style={
+            'font-family': 'Lora, serif',
+            'font-weight': '700',
+            'font-size': '2.5rem',
+            'color': '#2c3e50',
+            'textAlign': 'center',
+            'margin-bottom': '20px',
+            'margin-top': '40px'
+        }),
+
         html.P([
-    html.Strong("1. Superposition: "),
-    "Qubits can exist in multiple states (0, 1, or both simultaneously), allowing quantum computers to perform many calculations at once. This contrasts with classical computers, where each bit is either 0 or 1."
-], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '10px',
-    'line-height': '1.2'
-}),
+            html.Strong("1. Superposition: "),
+            "In classical computing, each bit is either 0 or 1. Quantum computers, on the other hand, leverage superposition, a quantum property that allows qubits to be in a state of 0, 1, or both at the same time. Imagine flipping a coin: while it's spinning, it's neither heads nor tails, but a mix of both. This superposition enables quantum computers to perform many calculations simultaneously."
+        ], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '10px',
+            'line-height': '1.2'
+        }),
 
-html.P([
-    html.Strong("2. Entanglement: "),
-    "When qubits are entangled, the state of one instantly influences the state of another, no matter the distance. This connection allows quantum computers to share information between qubits in ways classical bits cannot."
-], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '10px',
-    'line-height': '1.2'
-}),
+        html.P([
+            html.Strong("2. Entanglement: "),
+            "Another mind-bending quantum property is entanglement. When qubits are entangled, the state of one qubit instantly influences the state of another, no matter the distance between them. Albert Einstein famously called this “spooky action at a distance.” Entanglement allows quantum computers to share information across qubits in a way that classical bits cannot."
+        ], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '10px',
+            'line-height': '1.2'
+        }),
 
-html.P([
-    html.Strong("3. Quantum Interference: "),
-    "Quantum systems can use interference to amplify correct solutions and cancel out incorrect ones. This helps quantum computers find the right answers more efficiently, especially in optimization and search problems."
-], style={
-    'font-family': 'Lora, serif',
-    'font-size': '1.25rem',
-    'color': '#34495e',
-    'max-width': '1000px',
-    'margin': 'auto',
-    'margin-bottom': '10px',
-    'line-height': '1.2'
-}),
-html.P("Quantum computers, with these unique properties, have the potential to revolutionize fields requiring massive parallel computation, such as cryptography, drug discovery, and complex optimization. However, quantum computing is not always the best tool for every job, such as linear regression.", style={
+        html.P([
+            html.Strong("3. Quantum Interference: "),
+            "Quantum systems can also use interference to amplify correct solutions and cancel out incorrect ones. This helps quantum computers find the right answers more efficiently, making them well-suited for certain types of optimization and search problems."
+        ], style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.25rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-bottom': '10px',
+            'line-height': '1.2'
+        }),
+        html.P("With these unique properties, quantum computers hold the potential to revolutionize fields that require massive parallel computation, such as cryptography, drug discovery, and optimization problems. But, despite their promise, quantum computing is not always the best tool for every job, especially for tasks like linear regression.", style={
             'font-family': 'Lora, serif',
             'font-size': '1.25rem',
             'color': '#34495e',
@@ -683,7 +700,7 @@ html.P("Quantum computers, with these unique properties, have the potential to r
             'margin-top': '40px'
         }),
 
-        html.P("Just like in classical machine learning, the goal of quantum regression is to minimize the error between our predicted values and the actual data. However, in this case, we’re using a ⚛️ Variational Quantum Circuit ⚛️ to make the predictions, which introduces several important differences from traditional regression models.", style={
+        html.P("Just like in classical machine learning, the goal of quantum regression is to minimize the error between our predicted values and the actual data. However, in this case, we're using a ⚛️ Variational Quantum Circuit ⚛️ to make the predictions, which introduces several important differences from traditional regression models.", style={
             'font-family': 'Lora, serif',
             'font-size': '1.25rem',
             'color': '#34495e',
@@ -693,7 +710,7 @@ html.P("Quantum computers, with these unique properties, have the potential to r
             'line-height': '1.2'
         }),
 
-        html.P("Let’s walk through the process step-by-step of implementing a Quantum Regression Model using Pennylane, a Python package that allows us to build quantum circuits, explaining the quantum elements, and see how the model improves over time as we increase the number of training epochs.", style={
+        html.P("Let's walk through the process step-by-step of implementing a Quantum Regression Model using Pennylane, a Python package that allows us to build quantum circuits, explaining the quantum elements, and see how the model improves over time as we increase the number of training epochs.", style={
             'font-family': 'Lora, serif',
             'font-size': '1.25rem',
             'color': '#34495e',
@@ -764,7 +781,7 @@ html.P("Quantum computers, with these unique properties, have the potential to r
             dev = qml.device('default.qubit', wires=2)
             ```
 
-            Instead of using a classical model like LinearRegression from sklearn, we set up a quantum device to simulate a quantum computer. In this case, we’re using PennyLane’s default simulator to mimic a quantum processor with two qubits (quantum bits).
+            Instead of using a classical model like LinearRegression from sklearn, we set up a quantum device to simulate a quantum computer. In this case, we're using PennyLane's default simulator to mimic a quantum processor with two qubits (quantum bits).
 
             ```python
             @qml.qnode(dev)
@@ -802,7 +819,7 @@ html.P("Quantum computers, with these unique properties, have the potential to r
             }
         ),
 
-        html.P("In classical regression, we might define a linear model like y = mx + b. But here, we’re using a quantum circuit to generate our predictions. This function, called variational_circuit, transforms the input x (in this case, the scaled TV ad spending) by applying a series of quantum gates, which manipulate the qubits based on the input and the adjustable weights.", style={
+        html.P("In classical regression, we might define a linear model like y = mx + b. But here, we're using a quantum circuit to generate our predictions. This function, called variational_circuit, transforms the input x (in this case, the scaled TV ad spending) by applying a series of quantum gates, which manipulate the qubits based on the input and the adjustable weights.", style={
             'font-family': 'Lora, serif',
             'font-size': '1.25rem',
             'color': '#34495e',
@@ -816,7 +833,7 @@ html.P("Quantum computers, with these unique properties, have the potential to r
             '''
             - **Input Encoding**: The values of x are encoded into the quantum states of the qubits using RX and RY gates, which rotate the qubits on the X and Y axes.
             - **Variational Layers**: These are layers of quantum gates controlled by parameters (weights), much like in a neural network. The goal is to adjust these weights to minimize the error in predictions.
-            - **Entanglement**: The CNOT gates introduce entanglement between the qubits, allowing them to interact in ways that classical bits can’t. 🪄 This is where the quantum magic happens 🪄
+            - **Entanglement**: The CNOT gates introduce entanglement between the qubits, allowing them to interact in ways that classical bits can't. 🪄 This is where the quantum magic happens 🪄
             ''',
             style={
                 'font-family': 'Lora, serif',
@@ -849,7 +866,7 @@ html.P("Quantum computers, with these unique properties, have the potential to r
 
             Now, just like in classical regression, we use the **Mean Squared Error (MSE)** to minimize the cost function.
 
-            The difference is that instead of using a linear model to make predictions, we’re applying it to the quantum circuit itself. This function measures the error between the quantum model’s predictions and the actual sales data:
+            The difference is that instead of using a linear model to make predictions, we're applying it to the quantum circuit itself. This function measures the error between the quantum model's predictions and the actual sales data:
 
             ```python
             def cost(weights, X, Y):
@@ -991,7 +1008,7 @@ html.P("Quantum computers, with these unique properties, have the potential to r
             ],
             style={'textAlign': 'center'}
         ),
-        html.P("As we increase the number of epochs, the model’s weights are continually adjusted to better minimize the error between its predictions and the actual data points. At first, the fit is poor, with the line being almost horizontal and missing the data trend. However, as the quantum circuit adjusts its parameters, the regression line begins to better approximate the real relationship between the variables.", style={
+        html.P("As we increase the number of epochs, the model's weights are continually adjusted to better minimize the error between its predictions and the actual data points. At first, the fit is poor, with the line being almost horizontal and missing the data trend. However, as the quantum circuit adjusts its parameters, the regression line begins to better approximate the real relationship between the variables.", style={
             'font-family': 'Lora, serif',
             'font-size': '1.25rem',
             'color': '#34495e',
@@ -1050,7 +1067,7 @@ html.P([html.Strong("1. Linear Regression is a Deterministic Task"), ": Linear r
     'line-height': '1.2'
 }),
 
-html.P([html.Strong("Quantum Advantage? "), "Quantum computers shine when solving complex, non-linear problems or tasks that involve searching through large solution spaces. However, linear regression doesn’t involve the kind of combinatorial complexity that quantum computers are designed to tackle. The parallelism offered by quantum superposition and entanglement doesn’t provide a significant advantage in this case."], style={
+html.P([html.Strong("Quantum Advantage? "), "Quantum computers shine when solving complex, non-linear problems or tasks that involve searching through large solution spaces. However, linear regression doesn't involve the kind of combinatorial complexity that quantum computers are designed to tackle. The parallelism offered by quantum superposition and entanglement doesn't provide a significant advantage in this case."], style={
     'font-family': 'Lora, serif',
     'font-size': '1.25rem',
     'color': '#34495e',
@@ -1070,7 +1087,7 @@ html.P([html.Strong("2. Quantum Noise and Instability"), ": Quantum computers ar
     'line-height': '1.2'
 }),
 
-html.P([html.Strong("Classical computers"), " on the other hand, are deterministic and don’t face these noise-related issues, making them much more reliable for tasks that require precise, numerical solutions."], style={
+html.P([html.Strong("Classical computers"), " on the other hand, are deterministic and don't face these noise-related issues, making them much more reliable for tasks that require precise, numerical solutions."], style={
     'font-family': 'Lora, serif',
     'font-size': '1.25rem',
     'color': '#34495e',
@@ -1090,7 +1107,7 @@ html.P([html.Strong("3. Overhead in Quantum Algorithms"), ": Quantum machine lea
     'line-height': '1.2'
 }),
 
-html.P("For linear regression, where the relationship between variables is straightforward, the classical approach reaches a solution quickly with no need for iterative quantum parameter tuning. The extra complexity introduced by quantum circuits doesn’t add much benefit for such a simple, linear problem.", style={
+html.P("For linear regression, where the relationship between variables is straightforward, the classical approach reaches a solution quickly with no need for iterative quantum parameter tuning. The extra complexity introduced by quantum circuits doesn't add much benefit for such a simple, linear problem.", style={
     'font-family': 'Lora, serif',
     'font-size': '1.25rem',
     'color': '#34495e',
@@ -1100,7 +1117,7 @@ html.P("For linear regression, where the relationship between variables is strai
     'line-height': '1.2'
 }),
 
-html.P([html.Strong("4. Limited Hardware and Qubit Resources"), ": Quantum computers are still in the early stages of development, and the number of qubits available on today’s quantum machines is limited. Additionally, these qubits are prone to errors, and performing tasks like error correction consumes even more qubit resources. When it comes to linear regression, which classical computers can handle with ease even on large datasets, the current state of quantum hardware is often overkill."], style={
+html.P([html.Strong("4. Limited Hardware and Qubit Resources"), ": Quantum computers are still in the early stages of development, and the number of qubits available on today's quantum machines is limited. Additionally, these qubits are prone to errors, and performing tasks like error correction consumes even more qubit resources. When it comes to linear regression, which classical computers can handle with ease even on large datasets, the current state of quantum hardware is often overkill."], style={
     'font-family': 'Lora, serif',
     'font-size': '1.25rem',
     'color': '#34495e',
@@ -1120,7 +1137,7 @@ html.P("Classical systems can easily handle datasets with thousands or millions 
     'line-height': '1.2'
 }),
 
-html.P([html.Strong("5. Better Suited for Non-Linear Models"), ": Quantum computers truly shine when they’re applied to non-linear problems. In quantum-enhanced models, such as Quantum Support Vector Machines (QSVMs) or Quantum Neural Networks (QNNs), the quantum computer is able to exploit its unique properties to map data into higher-dimensional spaces and uncover hidden patterns in complex datasets."], style={
+html.P([html.Strong("5. Better Suited for Non-Linear Models"), ": Quantum computers truly shine when they're applied to non-linear problems. In quantum-enhanced models, such as Quantum Support Vector Machines (QSVMs) or Quantum Neural Networks (QNNs), the quantum computer is able to exploit its unique properties to map data into higher-dimensional spaces and uncover hidden patterns in complex datasets."], style={
     'font-family': 'Lora, serif',
     'font-size': '1.25rem',
     'color': '#34495e',
@@ -1130,7 +1147,7 @@ html.P([html.Strong("5. Better Suited for Non-Linear Models"), ": Quantum comput
     'line-height': '1.2'
 }),
 
-html.P("However, linear regression is fundamentally about finding linear relationships, which classical methods handle perfectly. Quantum computing might introduce non-linearity where it isn’t needed, making it an unnecessary and overly complex approach for this task.", style={
+html.P("However, linear regression is fundamentally about finding linear relationships, which classical methods handle perfectly. Quantum computing might introduce non-linearity where it isn't needed, making it an unnecessary and overly complex approach for this task.", style={
     'font-family': 'Lora, serif',
     'font-size': '1.25rem',
     'color': '#34495e',
@@ -1230,7 +1247,7 @@ html.P("Conclusion: Classical vs. Quantum for Linear Regression", style={
 
             👩🏽‍⚖️ **Final Verdict** 👩🏽‍⚖️
 
-            Quantum regression is fascinating but still experimental. While its potential is enormous, especially for future large-scale applications, classical models are more efficient and accessible at present. If you’re interested in staying on the cutting edge of technology, exploring quantum computing now can be valuable, but for everyday tasks, classical regression remains the more sensible choice.
+            Quantum regression is fascinating but still experimental. While its potential is enormous, especially for future large-scale applications, classical models are more efficient and accessible at present. If you're interested in staying on the cutting edge of technology, exploring quantum computing now can be valuable, but for everyday tasks, classical regression remains the more sensible choice.
             ''',
             style={
                 'font-family': 'Lora, serif',
@@ -1321,6 +1338,8 @@ def display_color(mean, std, sample_size):
     prevent_initial_callback=True
 )
 def display_scatter(intercept_dropdown, slope_dropdown, n_dropdown):
+    if intercept_dropdown is None:
+        intercept_dropdown = 0
     x_data, y_data, x_mean, y_mean = generate_data(intercept_dropdown, slope_dropdown, n_dropdown)
     fig = px.scatter(x=x_data, y=y_data, trendline='ols', color_discrete_sequence=["black"])
     fig.update_traces(line=dict(color="black"))
