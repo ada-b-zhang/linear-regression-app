@@ -537,7 +537,7 @@ app.layout = html.Div(
             'margin-top': '40px'
         }),
 
-        html.P("Alright, let’s start by reimagining what a computer can be. Classical computers process information using bits: those simple 0s and 1s that act like tiny light switches, either on or off. Quantum computers, on the other hand, take that idea and throw it into an entirely new dimension. Literally. By using qubits", style={
+        html.P("Alright, let’s start by reimagining what a computer can be. Classical computers process information using bits—those simple 0s and 1s that act like tiny light switches, either on or off.  Quantum computers, on the other hand, use qubits (quantum bits), which can be a 0, a 1, or even both 0 and 1 at the same time. This ability to be in multiple states at once is called superposition. Think of a spinning coin: while it’s spinning, you can’t say if it’s heads or tails—it’s sort of both until it lands. Quantum computers use this strange property to perform many calculations in parallel, unlike regular computers that focus on one task at a time.", style={
             'font-family': 'Lora, serif',
             'font-size': '1.25rem',
             'color': '#34495e',
@@ -546,7 +546,7 @@ app.layout = html.Div(
             'margin-bottom': '10px',
             'line-height': '1.2'
         }),
-        html.P("A qubit (quantum bit) can be a 0, a 1 (just like a normal bit) or, here’s the mind-bending part, both 0 and 1 at the same time! This ability to be in multiple states at once is called superposition. Think of a spinning coin: while it’s spinning, you can’t say if it’s heads or tails—it’s sort of both until it lands. Quantum computers harness this strange property to perform many calculations in parallel, unlike your regular laptop that can only focus on one task at a time.", style={
+        html.P("How does this occur? Thanks to entanglement, a phenomenon where two qubits become so deeply connected that whatever happens to one instantly affects the other—even if they’re separated by vast distances. This allows qubits to work together in ways classical bits never could, enabling quantum computers to solve complex problems by sharing and processing information much faster. For certain types of problems, like finding hidden patterns in large datasets, entangled qubits give quantum computers exponential power.", style={
             'font-family': 'Lora, serif',
             'font-size': '1.25rem',
             'color': '#34495e',
@@ -571,15 +571,7 @@ app.layout = html.Div(
             'margin-top': '0px',
             'margin-bottom': '40px'
         }),
-        html.P("How does this occur? Because of a property called entanglement. Imagine two of these qubits so deeply connected that whatever happens to one instantly affects the other—even if they’re separated by a million miles! This is called quantum entanglement, and it’s one of the wildest, most mind-boggling concepts in quantum physics. It’s like having two magical coin: flip one, and no matter where the other one is, it will instantly show the opposite result.", style={
-            'font-family': 'Lora, serif',
-            'font-size': '1.25rem',
-            'color': '#34495e',
-            'max-width': '1000px',
-            'margin': 'auto',
-            'margin-bottom': '10px',
-            'line-height': '1.2'
-        }),
+        
         # Insert Image or GIF
         html.Img(src='/assets/entangled.gif', style={
             'width': '50%',
@@ -603,8 +595,45 @@ app.layout = html.Div(
             'line-height': '0.7',
             'margin-bottom': '40px'
         }),
+        html.P([
+    html.Strong("1. Superposition: "),
+    "Qubits can exist in multiple states (0, 1, or both simultaneously), allowing quantum computers to perform many calculations at once. This contrasts with classical computers, where each bit is either 0 or 1."
+], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '10px',
+    'line-height': '1.2'
+}),
 
-        html.P("For quantum computers, this means that qubits can work together in ways classical bits never could. This deep connection allows quantum computers to solve complex problems by sharing and processing information much faster, like two brains that can think as one. When classical computers hit a wall trying to compute certain things (like finding hidden patterns in complex datasets), entangled qubits allow quantum computers to tackle these tasks in parallel, making them exponentially more powerful for certain types of problems.", style={
+html.P([
+    html.Strong("2. Entanglement: "),
+    "When qubits are entangled, the state of one instantly influences the state of another, no matter the distance. This connection allows quantum computers to share information between qubits in ways classical bits cannot."
+], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '10px',
+    'line-height': '1.2'
+}),
+
+html.P([
+    html.Strong("3. Quantum Interference: "),
+    "Quantum systems can use interference to amplify correct solutions and cancel out incorrect ones. This helps quantum computers find the right answers more efficiently, especially in optimization and search problems."
+], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '10px',
+    'line-height': '1.2'
+}),
+html.P("Quantum computers, with these unique properties, have the potential to revolutionize fields requiring massive parallel computation, such as cryptography, drug discovery, and complex optimization. However, quantum computing is not always the best tool for every job, such as linear regression.", style={
             'font-family': 'Lora, serif',
             'font-size': '1.25rem',
             'color': '#34495e',
@@ -613,6 +642,7 @@ app.layout = html.Div(
             'margin-bottom': '30px',
             'line-height': '1.2'
         }),
+
 
         html.P("🤔 But wait, what does this all mean for Regression Problems? 🤔", style={
             'font-family': 'Lora, serif',
@@ -981,7 +1011,7 @@ app.layout = html.Div(
             'line-height': '1.2'
         }),
 
-        html.P("🤔 So... what's the difference? Isn't it already good enough? Why go through all this? 🤔", style={
+        html.P("Why Quantum Computing is Less Suited for Linear Regression 📉", style={
             'font-family': 'Lora, serif',
             'font-size': '1.5rem',
             'color': '#34495e',
@@ -999,36 +1029,118 @@ app.layout = html.Div(
             'margin': '40px auto'
         }),
 
-        html.H2("Differences... and Conclusions", style={
-            'font-family': 'Lora, serif',
-            'font-weight': '700',
-            'font-size': '2.5rem',
-            'color': '#2c3e50',
-            'textAlign': 'center',
-            'margin-left': '200px',
-            'margin-bottom': '20px',
-            'margin-top': '40px'
-        }),
-        dcc.Markdown(
-            '''
-            In classical regression, you would fit a model like y = mx + b using a deterministic, algebraic approach. With quantum regression, instead of a simple formula, we’re using a quantum circuit to make predictions. The quantum circuit is much more flexible because it can model non-linear relationships inherently due to the complexity of quantum states.
 
-            - **Flexibility**: The quantum circuit allows us to capture complex, non-linear patterns that linear regression can’t. This can be especially useful when the data isn’t well-suited to a straight line.
-            - **Training Process**: n classical linear regression, finding the best-fit line is typically a one-step process. In quantum regression, we need to optimize the parameters (weights) iteratively, similar to training a neural network.
-            - **Performance over time**: As we increase the epochs, the model gradually learns a better fit for the data. Early on, the regression line may be far off, but by the end of training, it should closely follow the data points, reflecting a better understanding of the relationship between TV ads and sales.
+html.P("While quantum computers can outperform classical ones for certain tasks, linear regression is a problem that classical machines already handle very well. Here are some reasons why quantum computing might not be the best choice for linear regression:", style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '20px',
+    'line-height': '1.2'
+}),
 
-            As you can see, quantum regression introduces a whole new way of thinking about predictive modeling. While it’s still an emerging field, the potential for quantum computers to uncover hidden patterns in complex data could open up exciting new possibilities, particularly for non-linear relationships where classical methods struggle. Over time, as the model trains and we increase the epochs, the quantum model becomes better at predicting sales based on TV ad spending—similar to how traditional models improve, but with the unique power of quantum mechanics behind it.
-            ''',
-            style={
-                'font-family': 'Lora, serif',
-                'font-size': '1.25rem',
-                'color': '#34495e',
-                'max-width': '1000px',
-                'margin': 'auto',
-                'line-height': '1.2'
-            }
-        ),
-        html.P("🤔 Is it worth it though? 🤔", style={
+html.P([html.Strong("1. Linear Regression is a Deterministic Task"), ": Linear regression is based on finding a line (or plane) that best fits a dataset by minimizing the distance between the predicted and actual values. The equations that describe this are linear and can be solved deterministically using methods like Ordinary Least Squares (OLS). These are algebraically straightforward tasks that classical computers can handle in a few quick steps."], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '20px',
+    'line-height': '1.2'
+}),
+
+html.P([html.Strong("Quantum Advantage? "), "Quantum computers shine when solving complex, non-linear problems or tasks that involve searching through large solution spaces. However, linear regression doesn’t involve the kind of combinatorial complexity that quantum computers are designed to tackle. The parallelism offered by quantum superposition and entanglement doesn’t provide a significant advantage in this case."], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '20px',
+    'line-height': '1.2'
+}),
+
+html.P([html.Strong("2. Quantum Noise and Instability"), ": Quantum computers are incredibly sensitive to external interference, known as quantum noise. Even the smallest environmental disturbance can cause errors in a quantum system. For simple problems like linear regression, the precision required to calculate regression coefficients may be disrupted by quantum noise."], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '10px',
+    'line-height': '1.2'
+}),
+
+html.P([html.Strong("Classical computers"), " on the other hand, are deterministic and don’t face these noise-related issues, making them much more reliable for tasks that require precise, numerical solutions."], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '20px',
+    'line-height': '1.2'
+}),
+
+html.P([html.Strong("3. Overhead in Quantum Algorithms"), ": Quantum machine learning algorithms, such as Variational Quantum Circuits (VQCs), are capable of performing tasks like regression. These circuits optimize a set of parameters to reduce the error between the predicted and actual outputs, similar to how classical algorithms like gradient descent work. However, training a quantum model involves a high degree of overhead in terms of iterations, measurements, and parameter updates."], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '20px',
+    'line-height': '1.2'
+}),
+
+html.P("For linear regression, where the relationship between variables is straightforward, the classical approach reaches a solution quickly with no need for iterative quantum parameter tuning. The extra complexity introduced by quantum circuits doesn’t add much benefit for such a simple, linear problem.", style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '20px',
+    'line-height': '1.2'
+}),
+
+html.P([html.Strong("4. Limited Hardware and Qubit Resources"), ": Quantum computers are still in the early stages of development, and the number of qubits available on today’s quantum machines is limited. Additionally, these qubits are prone to errors, and performing tasks like error correction consumes even more qubit resources. When it comes to linear regression, which classical computers can handle with ease even on large datasets, the current state of quantum hardware is often overkill."], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '10px',
+    'line-height': '1.2'
+}),
+
+html.P("Classical systems can easily handle datasets with thousands or millions of records for regression analysis, while quantum computers are still limited in how much data they can process efficiently.", style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '20px',
+    'line-height': '1.2'
+}),
+
+html.P([html.Strong("5. Better Suited for Non-Linear Models"), ": Quantum computers truly shine when they’re applied to non-linear problems. In quantum-enhanced models, such as Quantum Support Vector Machines (QSVMs) or Quantum Neural Networks (QNNs), the quantum computer is able to exploit its unique properties to map data into higher-dimensional spaces and uncover hidden patterns in complex datasets."], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '20px',
+    'line-height': '1.2'
+}),
+
+html.P("However, linear regression is fundamentally about finding linear relationships, which classical methods handle perfectly. Quantum computing might introduce non-linearity where it isn’t needed, making it an unnecessary and overly complex approach for this task.", style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '30px',
+    'line-height': '1.2'
+}),
+
+html.P("When Quantum Computing Can Help in Regression Tasks", style={
             'font-family': 'Lora, serif',
             'font-size': '1.5rem',
             'color': '#34495e',
@@ -1039,19 +1151,82 @@ app.layout = html.Div(
             'line-height': '1.2',
             'font-weight': '700'
         }),
+
+        html.Hr(style={
+            'border': '1px solid #34495e',
+            'width': '80%',
+            'margin': '40px auto'
+        }),
+        
+        html.P("Though quantum computers might not excel at simple linear regression, there are certain scenarios where quantum techniques can improve regression models:", style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '20px',
+    'line-height': '1.2'
+    }),
+
+html.P([html.Strong("1. Quantum Kernel Methods"), ": Quantum computers can be used to project data into a higher-dimensional feature space using quantum feature maps. In this space, classical linear models can capture complex, non-linear relationships that they would otherwise miss. This approach is useful for tasks like non-linear regression or problems with complicated datasets that exhibit subtle relationships between variables."], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '20px',
+    'line-height': '1.2'
+}),
+
+html.P([html.Strong("2. Quantum-Assisted Regularization"), ": In high-dimensional datasets, regularization techniques such as Ridge regression or Lasso regression are used to prevent overfitting. Quantum algorithms can assist in optimizing these regularization parameters more efficiently, offering a quantum advantage in certain types of large-scale regression tasks."], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '10px',
+    'line-height': '1.2'
+}),
+
+html.P([html.Strong("3. Quantum Optimization"), ": Some regression tasks require solving optimization problems, especially when the objective function is non-convex. In these cases, quantum algorithms like Quantum Approximate Optimization Algorithm (QAOA) can be used to find global minima faster than classical optimization techniques."], style={
+    'font-family': 'Lora, serif',
+    'font-size': '1.25rem',
+    'color': '#34495e',
+    'max-width': '1000px',
+    'margin': 'auto',
+    'margin-bottom': '10px',
+    'line-height': '1.2'
+}),
+
+html.P("Conclusion: Classical vs. Quantum for Linear Regression", style={
+            'font-family': 'Lora, serif',
+            'font-size': '1.5rem',
+            'color': '#34495e',
+            'max-width': '1000px',
+            'margin': 'auto',
+            'margin-top': '40px',
+            'margin-bottom': '40px',
+            'line-height': '1.2',
+            'font-weight': '700'
+        }),
+
+        html.Hr(style={
+            'border': '1px solid #34495e',
+            'width': '80%',
+            'margin': '40px auto'
+        }),
+   
+
+
         dcc.Markdown(
             '''
-            👍 **Potential Benefits** 👍
+            In summary, while quantum computing is a powerful tool for many types of machine learning and optimization problems, it may not offer significant benefits for simple tasks like linear regression. The deterministic, algebraic nature of linear regression makes it well-suited to classical computers, which can solve these problems efficiently and without the overhead associated with quantum computation.
 
-            Quantum regression excels at capturing non-linear relationships in data, which classical linear models often miss. The expressive power of quantum circuits, utilizing entanglement and superposition, allows them to handle complex patterns naturally without the need for manually engineered features. This could give quantum models an edge in problems where traditional models struggle to fit non-linear dynamics. As quantum hardware improves, this potential will only grow, especially for tackling large, complex datasets.
+            That said, quantum computing still holds promise for more complex machine learning tasks, particularly those involving non-linear relationships or high-dimensional data. As quantum hardware improves and algorithms are further developed, we may see more use cases where quantum-enhanced regression models become more practical.
 
-            👎 **Current Drawbacks** 👎
+            For now, when it comes to linear regression, classical methods are still the best and most reliable choice.
 
-            Despite its promise, quantum regression is currently slow and computationally expensive. Training requires many epochs to converge, and quantum simulators or hardware are still limited, making quantum models impractical for most users today. Classical models, on the other hand, are fast, accessible, and well-optimized for most datasets. Additionally, quantum models are harder to interpret, meaning the tradeoff for flexibility is a loss in transparency compared to classical methods like linear regression.
-
-            ⚛️ **Should you use Quantum Computers for regression?** ⚛️
-
-            For now, classical methods are more practical for most real-world regression problems, especially if your data is small or the relationships are simple. Quantum regression might be worth exploring if you’re dealing with highly complex, non-linear data and have access to the necessary computational resources. However, for most users, classical models like linear or polynomial regression will continue to be the go-to solution.
+            This deep dive provides a comprehensive look at the strengths and limitations of quantum computing for linear regression, helping readers understand where quantum technology fits in the broader context of machine learning.
 
             👩🏽‍⚖️ **Final Verdict** 👩🏽‍⚖️
 
