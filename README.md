@@ -1,6 +1,6 @@
-# Linear Regression Demonstration
+# Linear Regression & Quantum Computing
 
-## Instructions to run app.py (or app2.py, app3.py, etc.)
+## Instructions
 1. Clone the repository:
    ```bash
    git clone https://github.com/ada-b-zhang/linear-regression-app.git
@@ -10,9 +10,9 @@
    ```
    pip install plotly dash pandas
    ```
-3. Then, run almost_final_draft.py (or app2.py, app3.py, etc.):
+3. Then, run final_draft.py:
    ```
-   python almost_final_draft.py
+   python final_draft.py
    ```
 4. Copy and paste the http link into a web browser
 
