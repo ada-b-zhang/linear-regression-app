@@ -1,7 +1,8 @@
 dash==2.18.1
 dash-core-components==2.0.0
 dash-html-components==2.0.0
-numpy
-pandas
-plotly
-pennylane
+numpy==1.26.4
+pandas==2.1.4
+plotly==5.9.0
+pennylane==0.38.0
+scikit-learn==1.5.2
