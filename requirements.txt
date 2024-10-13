@@ -4,3 +4,4 @@ dash-html-components==2.0.0
 numpy
 pandas
 plotly
+pennylane
